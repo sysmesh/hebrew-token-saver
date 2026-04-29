@@ -1,10 +1,15 @@
 # Hebrew Token Saver 🇮🇱 → 🇺🇸
 
-> **Save tokens by translating Hebrew prompts to English before sending to LLMs, while receiving responses in Hebrew.**
+
 > **הידעתם? שימוש בעברית בפרומפט מייצר כמות גדולה משמעותית של טוקנים יחסית לשימוש באנגלית בלבד**
+
 > **התוסף מאפשר לכם לכתוב פרופמט בעברית כאשר התוסך מבצע עבורכם תרגום נכון לאנגלית ושולח את האנגלית הלאה עם הוראה למודל להחזיר גם את התשובה בעברית וכך חוסך לכם המון טוקנים**
+
 > **רוצים לחסוך עוד יותר? יש אפשרות לאמר לתוסף לענות באנגלית מה שחוסך לכם את הטוקנים שחוזרים מהמודל**
+
 > **חדש! תמיכה ביישור ימין לשמאל אם זה חשוב לכם - על ידי הוספת הגדרה בקריאה - הכל בתיעוד למטה** 
+
+> **Save tokens by translating Hebrew prompts to English before sending to LLMs, while receiving responses in Hebrew.**
 ---
 
 ## The Problem: Hebrew Costs More Tokens
