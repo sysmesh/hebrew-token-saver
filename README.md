@@ -58,69 +58,6 @@ Token savings: 40%
 
 ## Installation & Usage by Platform
 
-### 🟦 Pi.dev
-
-#### Installation
-
-```bash
-# 1. Clone or download the repository
-git clone https://github.com/sysmesh/hebrew-token-saver.git
-
-# 2. Copy the Pi.dev skill to your skills directory
-cp -r hebrew-token-saver/skills/pi-dev ~/.pi/skills/hebrew-auto-translate
-
-# 3. Verify installation
-ls -la ~/.pi/skills/hebrew-auto-translate/
-
-# 4. Restart pi.dev (if running)
-# The skill will auto-load on next session
-```
-
-#### Usage
-
-**Automatic Mode (Default):**
-
-Simply type in Hebrew - the skill automatically handles everything:
-
-```
-> איך מכינים חלבה?
-
-[Skill automatically: Detects Hebrew → Translates → Sends to LLM]
-[LLM responds in Hebrew]
-```
-
-**Manual Mode with Flags:**
-
-```bash
-# Force English response (saves more tokens)
-> /hebrew-translate --english "שלום עולם"
-
-# Force RTL formatting
-> /hebrew-translate --rtl "שלום עולם"
-
-# Force translation even if not detected as Hebrew
-> /hebrew-translate --force "mixed text שלום"
-```
-
-**Configuration (Optional):**
-
-Add to `~/.pi/config.json`:
-
-```json
-{
-  "skills": {
-    "hebrew-auto-translate": {
-      "enabled": true,
-      "autoTranslate": true,
-      "useHybridMode": false,
-      "defaultResponseLanguage": "hebrew"
-    }
-  }
-}
-```
-
----
-
 ### 🟨 Claude Code
 
 #### Installation
@@ -245,6 +182,69 @@ Token Savings: Up to 40% on input tokens
 
 Final Prompt: Hello world . Important! Reply in Hebrew
 =========================
+```
+
+---
+
+### 🟦 Pi.dev
+
+#### Installation
+
+```bash
+# 1. Clone or download the repository
+git clone https://github.com/sysmesh/hebrew-token-saver.git
+
+# 2. Copy the Pi.dev skill to your skills directory
+cp -r hebrew-token-saver/skills/pi-dev ~/.pi/skills/hebrew-auto-translate
+
+# 3. Verify installation
+ls -la ~/.pi/skills/hebrew-auto-translate/
+
+# 4. Restart pi.dev (if running)
+# The skill will auto-load on next session
+```
+
+#### Usage
+
+**Automatic Mode (Default):**
+
+Simply type in Hebrew - the skill automatically handles everything:
+
+```
+> איך מכינים חלבה?
+
+[Skill automatically: Detects Hebrew → Translates → Sends to LLM]
+[LLM responds in Hebrew]
+```
+
+**Manual Mode with Flags:**
+
+```bash
+# Force English response (saves more tokens)
+> /hebrew-translate --english "שלום עולם"
+
+# Force RTL formatting
+> /hebrew-translate --rtl "שלום עולם"
+
+# Force translation even if not detected as Hebrew
+> /hebrew-translate --force "mixed text שלום"
+```
+
+**Configuration (Optional):**
+
+Add to `~/.pi/config.json`:
+
+```json
+{
+  "skills": {
+    "hebrew-auto-translate": {
+      "enabled": true,
+      "autoTranslate": true,
+      "useHybridMode": false,
+      "defaultResponseLanguage": "hebrew"
+    }
+  }
+}
 ```
 
 ---
@@ -477,69 +477,6 @@ Fibonacci numbers recursively. Can you help me?"
 ---
 
 ## התקנה ושימוש לפי פלטפורמה
-
-### 🟦 Pi.dev
-
-#### התקנה
-
-```bash
-# 1. הורדת המאגר
-git clone https://github.com/sysmesh/hebrew-token-saver.git
-
-# 2. העתקת סקיל Pi.dev לספריית הסקילים
-cp -r hebrew-token-saver/skills/pi-dev ~/.pi/skills/hebrew-auto-translate
-
-# 3. אימות ההתקנה
-ls -la ~/.pi/skills/hebrew-auto-translate/
-
-# 4. הפעלה מחדש של pi.dev (אם רץ)
-# הסקיל יטען אוטומטית בסיבוב הבא
-```
-
-#### שימוש
-
-**מצב אוטומטי (ברירת מחדל):**
-
-פשוט כתוב בעברית - הסקיל מטפל בהכל אוטומטית:
-
-```
-> איך מכינים חלבה?
-
-[הסקיל אוטומטית: מזדהה עברית → מתרגם → שולח ל-LLM]
-[ה-LLM עונה בעברית]
-```
-
-**מצב ידני עם דגלים:**
-
-```bash
-# אכוף תשובה באנגלית (חוסך יותר טוקנים)
-> /hebrew-translate --english "שלום עולם"
-
-# אכוף פורמט RTL
-> /hebrew-translate --rtl "שלום עולם"
-
-# אכוף תרגום גם אם לא זוהה כעברית
-> /hebrew-translate --force "mixed text שלום"
-```
-
-**תצורה (אופציונלי):**
-
-הוסף ל-`~/.pi/config.json`:
-
-```json
-{
-  "skills": {
-    "hebrew-auto-translate": {
-      "enabled": true,
-      "autoTranslate": true,
-      "useHybridMode": false,
-      "defaultResponseLanguage": "hebrew"
-    }
-  }
-}
-```
-
----
 
 ### 🟨 Claude Code
 
@@ -835,4 +772,67 @@ MIT License - חופשי לשימוש ושינוי.
 - **Translation API**: MyMemory Translation API
 - **Local Model**: Helsinki-NLP/opus-mt-he-en via Transformers.js
 - **Inspired by**: Hebrew RTL formatting techniques
+
+### 🟦 Pi.dev
+
+#### התקנה
+
+```bash
+# 1. הורדת המאגר
+git clone https://github.com/sysmesh/hebrew-token-saver.git
+
+# 2. העתקת סקיל Pi.dev לספריית הסקילים
+cp -r hebrew-token-saver/skills/pi-dev ~/.pi/skills/hebrew-auto-translate
+
+# 3. אימות ההתקנה
+ls -la ~/.pi/skills/hebrew-auto-translate/
+
+# 4. הפעלה מחדש של pi.dev (אם רץ)
+# הסקיל יטען אוטומטית בסיבוב הבא
+```
+
+#### שימוש
+
+**מצב אוטומטי (ברירת מחדל):**
+
+פשוט כתוב בעברית - הסקיל מטפל בהכל אוטומטית:
+
+```
+> איך מכינים חלבה?
+
+[הסקיל אוטומטית: מזדהה עברית → מתרגם → שולח ל-LLM]
+[ה-LLM עונה בעברית]
+```
+
+**מצב ידני עם דגלים:**
+
+```bash
+# אכוף תשובה באנגלית (חוסך יותר טוקנים)
+> /hebrew-translate --english "שלום עולם"
+
+# אכוף פורמט RTL
+> /hebrew-translate --rtl "שלום עולם"
+
+# אכוף תרגום גם אם לא זוהה כעברית
+> /hebrew-translate --force "mixed text שלום"
+```
+
+**תצורה (אופציונלי):**
+
+הוסף ל-`~/.pi/config.json`:
+
+```json
+{
+  "skills": {
+    "hebrew-auto-translate": {
+      "enabled": true,
+      "autoTranslate": true,
+      "useHybridMode": false,
+      "defaultResponseLanguage": "hebrew"
+    }
+  }
+}
+```
+
+---
 
