@@ -4,18 +4,36 @@
 
 ### Pi.dev Installation
 
+**Option 1: Global Installation (Recommended - available in all projects)**
+
 ```bash
 # 1. Clone or download the repository
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-# 2. Copy the Pi.dev skill to your skills directory
-cp -r skills/pi-dev ~/.pi/skills/hebrew-auto-translate
+# 2. Create agent skills directory if it doesn't exist
+mkdir -p ~/.pi/agent/skills
+
+# 3. Copy the Pi.dev skill to your agent skills directory
+cp -r skills/pi-dev ~/.pi/agent/skills/hebrew-auto-translate
+
+# 4. Verify installation
+ls -la ~/.pi/agent/skills/hebrew-auto-translate/
+
+# 5. Restart pi.dev (if running)
+# The skill will auto-load on next session
+```
+
+**Option 2: Project-Level Installation (only in current project)**
+
+```bash
+# 1. From your project directory, create .pi/skills directory
+mkdir -p .pi/skills
+
+# 2. Copy the skill
+cp -r skills/pi-dev .pi/skills/hebrew-auto-translate
 
 # 3. Verify installation
-ls -la ~/.pi/skills/hebrew-auto-translate/
-
-# 4. Restart pi.dev (if running)
-# The skill will auto-load on next session
+ls -la .pi/skills/hebrew-auto-translate/
 ```
 
 **Usage in Pi.dev:**

@@ -293,60 +293,75 @@ Final Prompt: Hello world . Important! Reply in Hebrew
 
 #### Installation on macOS
 
+**Option 1: Global Installation (Recommended - available in all projects)**
+
 ```bash
 # 1. Clone or download the repository
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-# 2. Create skills directory if it doesn't exist
-mkdir -p ~/.pi/skills
+# 2. Create agent skills directory if it doesn't exist
+mkdir -p ~/.pi/agent/skills
 
-# 3. Copy the Pi.dev skill to your skills directory
-cp -r hebrew-token-saver/skills/pi-dev ~/.pi/skills/hebrew-auto-translate
+# 3. Copy the Pi.dev skill to your agent skills directory
+cp -r hebrew-token-saver/skills/pi-dev ~/.pi/agent/skills/hebrew-auto-translate
 
 # 4. Verify installation
-ls -la ~/.pi/skills/hebrew-auto-translate/
+ls -la ~/.pi/agent/skills/hebrew-auto-translate/
 
-# 4. Restart pi.dev (if running)
+# 5. Restart pi.dev (if running)
 # The skill will auto-load on next session
+```
+
+**Option 2: Project-Level Installation (only in current project)**
+
+```bash
+# 1. From your project directory, create .pi/skills directory
+mkdir -p .pi/skills
+
+# 2. Copy the skill (assuming you cloned hebrew-token-saver nearby)
+cp -r hebrew-token-saver/skills/pi-dev .pi/skills/hebrew-auto-translate
+
+# 3. Verify installation
+ls -la .pi/skills/hebrew-auto-translate/
 ```
 
 #### Installation on Windows
 
-**Using PowerShell:**
+**Using PowerShell (Global):**
 
 ```powershell
 # 1. Clone or download the repository
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-# 2. Create skills directory if it doesn't exist
-New-Item -ItemType Directory -Force -Path "$HOME\.pi\skills"
+# 2. Create agent skills directory if it doesn't exist
+New-Item -ItemType Directory -Force -Path "$HOME\.pi\agent\skills"
 
-# 3. Copy the Pi.dev skill to your skills directory
-Copy-Item -Recurse "hebrew-token-saver\skills\pi-dev" -Destination "$HOME\.pi\skills\hebrew-auto-translate"
+# 3. Copy the Pi.dev skill to your agent skills directory
+Copy-Item -Recurse "hebrew-token-saver\skills\pi-dev" -Destination "$HOME\.pi\agent\skills\hebrew-auto-translate"
 
 # 4. Verify installation
-Get-ChildItem "$HOME\.pi\skills\hebrew-auto-translate"
+Get-ChildItem "$HOME\.pi\agent\skills\hebrew-auto-translate"
 
-# 4. Restart pi.dev (if running)
+# 5. Restart pi.dev (if running)
 # The skill will auto-load on next session
 ```
 
-**Using Command Prompt:**
+**Using Command Prompt (Global):**
 
 ```cmd
 REM 1. Clone or download the repository
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-REM 2. Create skills directory if it doesn't exist
-mkdir %USERPROFILE%\.pi\skills
+REM 2. Create agent skills directory if it doesn't exist
+mkdir %USERPROFILE%\.pi\agent\skills
 
-REM 3. Copy the Pi.dev skill to your skills directory
-xcopy /E /I /Y hebrew-token-saver\skills\pi-dev %USERPROFILE%\.pi\skills\hebrew-auto-translate\
+REM 3. Copy the Pi.dev skill to your agent skills directory
+xcopy /E /I /Y hebrew-token-saver\skills\pi-dev %USERPROFILE%\.pi\agent\skills\hebrew-auto-translate\
 
 REM 4. Verify installation
-dir %USERPROFILE%\.pi\skills\hebrew-auto-translate\
+dir %USERPROFILE%\.pi\agent\skills\hebrew-auto-translate\
 
-REM 4. Restart pi.dev (if running)
+REM 5. Restart pi.dev (if running)
 REM The skill will auto-load on next session
 ```
 
@@ -1018,60 +1033,75 @@ MIT License - חופשי לשימוש ושינוי.
 
 #### התקנה ב-macOS
 
+**אפשרות 1: התקנה גלובלית (מומלץ - זמין בכל הפרויקטים)**
+
 ```bash
 # 1. הורדת המאגר
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-# 2. יצירת ספריית סקילים אם היא לא קיימת
-mkdir -p ~/.pi/skills
+# 2. יצירת ספריית סקילים גלובלית אם היא לא קיימת
+mkdir -p ~/.pi/agent/skills
 
-# 3. העתקת סקיל Pi.dev לספריית הסקילים
-cp -r hebrew-token-saver/skills/pi-dev ~/.pi/skills/hebrew-auto-translate
+# 3. העתקת סקיל Pi.dev לספריית הסקילים הגלובלית
+cp -r hebrew-token-saver/skills/pi-dev ~/.pi/agent/skills/hebrew-auto-translate
 
 # 4. אימות ההתקנה
-ls -la ~/.pi/skills/hebrew-auto-translate/
+ls -la ~/.pi/agent/skills/hebrew-auto-translate/
 
-# 4. הפעלה מחדש של pi.dev (אם רץ)
+# 5. הפעלה מחדש של pi.dev (אם רץ)
 # הסקיל יטען אוטומטית בסיבוב הבא
+```
+
+**אפשרות 2: התקנה ברמת הפרויקט (רק בפרויקט הנוכחי)**
+
+```bash
+# 1. מספריית הפרויקט שלך, צור ספריית .pi/skills
+mkdir -p .pi/skills
+
+# 2. העתק את הסקיל (בהנחה שאתה קלטת את hebrew-token-saver בסמוך)
+cp -r hebrew-token-saver/skills/pi-dev .pi/skills/hebrew-auto-translate
+
+# 3. אימות ההתקנה
+ls -la .pi/skills/hebrew-auto-translate/
 ```
 
 #### התקנה ב-Windows
 
-**באמצעות PowerShell:**
+**באמצעות PowerShell (גלובלי):**
 
 ```powershell
 # 1. הורדת המאגר
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-# 2. יצירת ספריית סקילים אם היא לא קיימת
-New-Item -ItemType Directory -Force -Path "$HOME\.pi\skills"
+# 2. יצירת ספריית סקילים גלובלית אם היא לא קיימת
+New-Item -ItemType Directory -Force -Path "$HOME\.pi\agent\skills"
 
-# 3. העתקת סקיל Pi.dev לספריית הסקילים
-Copy-Item -Recurse "hebrew-token-saver\skills\pi-dev" -Destination "$HOME\.pi\skills\hebrew-auto-translate"
+# 3. העתקת סקיל Pi.dev לספריית הסקילים הגלובלית
+Copy-Item -Recurse "hebrew-token-saver\skills\pi-dev" -Destination "$HOME\.pi\agent\skills\hebrew-auto-translate"
 
 # 4. אימות ההתקנה
-Get-ChildItem "$HOME\.pi\skills\hebrew-auto-translate"
+Get-ChildItem "$HOME\.pi\agent\skills\hebrew-auto-translate"
 
-# 4. הפעלה מחדש של pi.dev (אם רץ)
+# 5. הפעלה מחדש של pi.dev (אם רץ)
 # הסקיל יטען אוטומטית בסיבוב הבא
 ```
 
-**באמצעות Command Prompt:**
+**באמצעות Command Prompt (גלובלי):**
 
 ```cmd
 REM 1. הורדת המאגר
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-REM 2. יצירת ספריית סקילים אם היא לא קיימת
-mkdir %USERPROFILE%\.pi\skills
+REM 2. יצירת ספריית סקילים גלובלית אם היא לא קיימת
+mkdir %USERPROFILE%\.pi\agent\skills
 
-REM 3. העתקת סקיל Pi.dev לספריית הסקילים
-xcopy /E /I /Y hebrew-token-saver\skills\pi-dev %USERPROFILE%\.pi\skills\hebrew-auto-translate\
+REM 3. העתקת סקיל Pi.dev לספריית הסקילים הגלובלית
+xcopy /E /I /Y hebrew-token-saver\skills\pi-dev %USERPROFILE%\.pi\agent\skills\hebrew-auto-translate\
 
 REM 4. אימות ההתקנה
-dir %USERPROFILE%\.pi\skills\hebrew-auto-translate\
+dir %USERPROFILE%\.pi\agent\skills\hebrew-auto-translate\
 
-REM 4. הפעלה מחדש של pi.dev (אם רץ)
+REM 5. הפעלה מחדש של pi.dev (אם רץ)
 REM הסקיל יטען אוטומטית בסיבוב הבא
 ```
 
