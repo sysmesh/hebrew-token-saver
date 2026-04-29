@@ -64,7 +64,7 @@ Token savings: 40%
 
 ```bash
 # 1. Clone or download the repository
-git clone https://github.com/your-username/hebrew-token-saver.git
+git clone https://github.com/sysmesh/hebrew-token-saver.git
 
 # 2. Copy the Pi.dev skill to your skills directory
 cp -r hebrew-token-saver/skills/pi-dev ~/.pi/skills/hebrew-auto-translate
@@ -484,7 +484,7 @@ Fibonacci numbers recursively. Can you help me?"
 
 ```bash
 # 1. הורדת המאגר
-git clone https://github.com/your-username/hebrew-token-saver.git
+git clone https://github.com/sysmesh/hebrew-token-saver.git
 
 # 2. העתקת סקיל Pi.dev לספריית הסקילים
 cp -r hebrew-token-saver/skills/pi-dev ~/.pi/skills/hebrew-auto-translate

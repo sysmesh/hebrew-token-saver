@@ -6,7 +6,7 @@
 
 ```bash
 # 1. Clone or download the repository
-git clone https://github.com/your-username/hebrew-token-saver.git
+git clone https://github.com/sysmesh/hebrew-token-saver.git
 
 # 2. Copy the Pi.dev skill to your skills directory
 cp -r skills/pi-dev ~/.pi/skills/hebrew-auto-translate
@@ -259,6 +259,6 @@ hebrew-token-saver/
 
 ## Support
 
-- **Issues**: https://github.com/your-username/hebrew-token-saver/issues
+- **Issues**: https://github.com/sysmesh/hebrew-token-saver/issues
 - **Documentation**: See README_FULL.md
 - **API**: MyMemory Translation API (https://www.mymemory.net/api/)
