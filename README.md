@@ -37,19 +37,19 @@ Token savings: 40%
 │                    HOW IT WORKS                                │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│   1. You type in Hebrew: "איך מכינים חלבה?"                  │
+│   1. You type in Hebrew: "הסבר לי את הלולאה בשורה 100"      │
 │                        ↓                                        │
 │   2. Auto-detect Hebrew (≥20% Hebrew characters)              │
 │                        ↓                                        │
-│   3. Translate to English: "How to make halva?"              │
+│   3. Translate to English: "Explain the loop in line 100"     │
 │                        ↓                                        │
 │   4. Append: ". Important! Reply in Hebrew"                   │
 │                        ↓                                        │
-│   5. Send to LLM: "How to make halva? . Important! Reply in Hebrew" │
+│   5. Send to LLM: "Explain the loop in line 100 . Important! Reply in Hebrew" │
 │                        ↓                                        │
 │   6. LLM responds in Hebrew                                    │
 │                        ↓                                        │
-│   7. You receive: "חלבה היא ממתק ממוצא מזרחי..."            │
+│   7. You receive: "בשורה 100 יש לולאת for שמתירה על..."     │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -457,19 +457,19 @@ Fibonacci numbers recursively. Can you help me?"
 │                    איך זה עובד                                 │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│   1. אתה כותב בעברית: "איך מכינים חלבה?"                     │
+│   1. אתה כותב בעברית: "הסבר לי את הלולאה בשורה 100"         │
 │                        ↓                                        │
 │   2. זיהוי אוטומטי של עברית (≥20% תווים עבריים)             │
 │                        ↓                                        │
-│   3. תרגום לאנגלית: "How to make halva?"                     │
+│   3. תרגום לאנגלית: "Explain the loop in line 100"           │
 │                        ↓                                        │
 │   4. הוספת: ". Important! Reply in Hebrew"                    │
 │                        ↓                                        │
-│   5. שליחה ל-LLM: "How to make halva? . Important! Reply in Hebrew" │
+│   5. שליחה ל-LLM: "Explain the loop in line 100 . Important! Reply in Hebrew" │
 │                        ↓                                        │
 │   6. ה-LLM עונה בעברית                                        │
 │                        ↓                                        │
-│   7. אתה מקבל: "חלבה היא ממתק ממוצא מזרחי..."               │
+│   7. אתה מקבל: "בשורה 100 יש לולאת for שמתירה על..."       │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
