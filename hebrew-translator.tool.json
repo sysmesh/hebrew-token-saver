@@ -1,0 +1,79 @@
+{
+  "name": "hebrewTranslator",
+  "version": "1.0.0",
+  "description": "Auto-detects Hebrew prompts, translates to English, and requests Hebrew responses",
+  "type": "prompt-interceptor",
+  "author": "Hebrew Token Saver",
+  "license": "MIT",
+  "platforms": ["pi.dev", "claudecode", "opencode"],
+  "capabilities": {
+    "detection": "Automatic Hebrew text detection",
+    "translation": "Hebrew to English via MyMemory API",
+    "response-request": "Automatically appends Hebrew response request"
+  },
+  "configuration": {
+    "apiEndpoint": "https://api.mymemory.net/api/transliterate",
+    "sourceLanguage": "iw",
+    "targetLanguage": "en",
+    "responseRequest": ". Important! Reply in Hebrew"
+  },
+  "usage": {
+    "pi.dev": {
+      "install": "cp -r hebrew-token-saver ~/.pi/skills/",
+      "enable": "Auto-enabled when skill is in skills directory"
+    },
+    "claudecode": {
+      "install": "Add hebrew-translator.tool.json to tools directory",
+      "enable": "Configure in .claudecode/config.json"
+    },
+    "opencode": {
+      "install": "Add to skills directory",
+      "enable": "Configure prompt interceptor in settings"
+    }
+  },
+  "api": {
+    "name": "MyMemory Translation API",
+    "url": "https://www.mymemory.net/api/",
+    "pricing": "Free - 1000 words/day",
+    "apiKeyRequired": false
+  },
+  "workflow": [
+    {
+      "step": 1,
+      "action": "detect",
+      "description": "Check if input contains Hebrew characters (≥20% Hebrew)"
+    },
+    {
+      "step": 2,
+      "action": "translate",
+      "description": "Call MyMemory API to translate Hebrew → English"
+    },
+    {
+      "step": 3,
+      "action": "append",
+      "description": "Add '. Important! Reply in Hebrew' to translated prompt"
+    },
+    {
+      "step": 4,
+      "action": "send",
+      "description": "Send final prompt to configured LLM"
+    },
+    {
+      "step": 5,
+      "action": "return",
+      "description": "LLM's Hebrew response is returned to user"
+    }
+  ],
+  "examples": [
+    {
+      "input": "איך מכינים חלבה?",
+      "translated": "How to make halva?",
+      "finalPrompt": "How to make halva? . Important! Reply in Hebrew"
+    },
+    {
+      "input": "מה הcapital של צרפת?",
+      "translated": "What is the capital of France?",
+      "finalPrompt": "What is the capital of France? . Important! Reply in Hebrew"
+    }
+  ]
+}

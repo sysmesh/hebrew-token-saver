@@ -1,0 +1,38 @@
+{
+  "name": "hebrew-token-saver",
+  "version": "1.0.0",
+  "description": "Cross-platform skill that auto-translates Hebrew prompts to English and requests Hebrew responses",
+  "main": "hebrew-translator.js",
+  "bin": {
+    "hebrew-translate": "./hebrew-translator.js",
+    "hebrew-translate-hybrid": "./hebrew-translator-hybrid.js"
+  },
+  "scripts": {
+    "test": "node hebrew-translator.js 'שלום עולם'",
+    "test-hybrid": "node hebrew-translator-hybrid.js 'שלום עולם'",
+    "demo": "node hebrew-translator.js 'איך מכינים חלבה?'",
+    "demo-hybrid": "node hebrew-translator-hybrid.js 'איך מכינים חלבה?'"
+  },
+  "keywords": [
+    "hebrew",
+    "translation",
+    "skill",
+    "pi.dev",
+    "claudecode",
+    "opencode",
+    "llm",
+    "prompt"
+  ],
+  "author": "Hebrew Token Saver",
+  "license": "MIT",
+  "repository": {
+    "type": "git"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "@xenova/transformers": "^2.17.2"
+  },
+  "devDependencies": {}
+}
