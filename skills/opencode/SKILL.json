@@ -1,0 +1,85 @@
+{
+  "name": "hebrew-auto-translate",
+  "version": "1.0.0",
+  "description": "Automatically translates Hebrew prompts to English before sending to LLM, then requests response in Hebrew. Saves up to 50% on input tokens.",
+  "type": "prompt-processor",
+  "platform": "opencode",
+  "author": "Hebrew Token Saver",
+  "license": "MIT",
+  
+  "triggers": {
+    "onPrompt": {
+      "enabled": true,
+      "autoDetect": true,
+      "description": "Automatically intercept and translate Hebrew prompts"
+    }
+  },
+  
+  "configuration": {
+    "autoTranslate": {
+      "type": "boolean",
+      "default": true,
+      "description": "Automatically translate Hebrew prompts"
+    },
+    "responseLanguage": {
+      "type": "string",
+      "default": "hebrew",
+      "enum": ["hebrew", "english"],
+      "description": "Default language for LLM responses"
+    },
+    "useRtlFormatting": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use RTL formatting for Hebrew output"
+    },
+    "hebrewThreshold": {
+      "type": "number",
+      "default": 0.2,
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Minimum percentage of Hebrew characters to detect as Hebrew"
+    }
+  },
+  
+  "commands": [
+    {
+      "name": "/hebrew-translate",
+      "description": "Manually translate a Hebrew prompt",
+      "parameters": [
+        {
+          "name": "prompt",
+          "type": "string",
+          "required": true,
+          "description": "The Hebrew text to translate"
+        },
+        {
+          "name": "--english",
+          "type": "flag",
+          "description": "Request English response instead of Hebrew"
+        },
+        {
+          "name": "--rtl",
+          "type": "flag",
+          "description": "Use RTL formatting for Hebrew output"
+        },
+        {
+          "name": "--force",
+          "type": "flag",
+          "description": "Force translation even if not Hebrew"
+        }
+      ]
+    }
+  ],
+  
+  "implementation": {
+    "type": "javascript",
+    "entryPoint": "skill.js",
+    "functions": ["onPrompt", "hebrewTranslate"]
+  },
+  
+  "metadata": {
+    "tokenSavings": "Up to 50% on input tokens",
+    "apiUsed": "MyMemory Translation API (free)",
+    "offlineSupport": false
+  }
+}

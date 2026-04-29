@@ -12,15 +12,6 @@ Hebrew text requires significantly more tokens than English to express the same 
 2. **Morphology**: Hebrew words are more densely packed with meaning
 3. **Tokenization**: LLM tokenizers are optimized for English
 
-### Token Cost Comparison
-
-| Prompt | Language | Tokens | Cost (at $0.01/1K tokens) |
-|--------|----------|--------|---------------------------|
-| `שלום עולם, איך מכינים חלבה?` | Hebrew | ~15-20 | $0.00015-0.00020 |
-| `Hello world, how to make halva?` | English | ~8-10 | $0.00008-0.00010 |
-
-**Savings: Up to 50% on input tokens!**
-
 ### Real-World Example
 
 ```bash
@@ -65,126 +56,217 @@ Token savings: 40%
 
 ---
 
-## Installation
+## Installation & Usage by Platform
 
-### For Pi.dev
+### 🟦 Pi.dev
+
+#### Installation
 
 ```bash
-# Clone the repository
+# 1. Clone or download the repository
 git clone https://github.com/your-username/hebrew-token-saver.git
 
-# Copy to pi skills directory
-cp -r hebrew-token-saver ~/.pi/skills/
+# 2. Copy the Pi.dev skill to your skills directory
+cp -r hebrew-token-saver/skills/pi-dev ~/.pi/skills/hebrew-auto-translate
 
-# The skill will auto-load when you use pi
+# 3. Verify installation
+ls -la ~/.pi/skills/hebrew-auto-translate/
+
+# 4. Restart pi.dev (if running)
+# The skill will auto-load on next session
 ```
 
-### For Claude Code
+#### Usage
 
-```bash
-# Option 1: Add to tools directory
-mkdir -p ~/.claude/tools
-cp hebrew-translator.tool.json ~/.claude/tools/
+**Automatic Mode (Default):**
 
-# Option 2: Use as standalone script
-npm install -g ./hebrew-token-saver
+Simply type in Hebrew - the skill automatically handles everything:
 
-# Then use in your prompts:
-hebrew-translate "שלום עולם"
+```
+> איך מכינים חלבה?
+
+[Skill automatically: Detects Hebrew → Translates → Sends to LLM]
+[LLM responds in Hebrew]
 ```
 
-### For Open Code
+**Manual Mode with Flags:**
 
 ```bash
-# Add to skills directory
-cp -r hebrew-token-saver ~/.opencode/skills/
+# Force English response (saves more tokens)
+> /hebrew-translate --english "שלום עולם"
 
-# Configure in settings.json:
+# Force RTL formatting
+> /hebrew-translate --rtl "שלום עולם"
+
+# Force translation even if not detected as Hebrew
+> /hebrew-translate --force "mixed text שלום"
+```
+
+**Configuration (Optional):**
+
+Add to `~/.pi/config.json`:
+
+```json
 {
   "skills": {
-    "hebrew-token-saver": {
+    "hebrew-auto-translate": {
       "enabled": true,
-      "autoTranslate": true
+      "autoTranslate": true,
+      "useHybridMode": false,
+      "defaultResponseLanguage": "hebrew"
     }
   }
 }
 ```
 
-### Quick Start (Standalone)
+---
+
+### 🟨 Claude Code
+
+#### Installation
 
 ```bash
-# No installation needed - just run!
-node hebrew-translator.js "שלום עולם"
+# 1. Create tools directory if it doesn't exist
+mkdir -p ~/.claude/tools
 
-# Or with npm
-npm install ./hebrew-token-saver
-npx hebrew-translate "שלום עולם"
+# 2. Copy the tool files
+cp hebrew-token-saver/skills/claude-code/hebrew-translator-mcp.js ~/.claude/tools/
+cp hebrew-token-saver/skills/claude-code/hebrew-translator.tool.json ~/.claude/tools/
+
+# 3. Verify installation
+ls -la ~/.claude/tools/hebrew-translator*
+
+# 4. Restart Claude Code
+```
+
+#### Usage
+
+**Using the Tool Directly:**
+
+```bash
+# Basic translation
+/tool hebrew_translator --prompt "שלום עולם"
+
+# Request English response
+/tool hebrew_translator --prompt "שלום עולם" --reply-in-english
+
+# Request RTL formatting
+/tool hebrew_translator --prompt "שלום עולם" --force-rtl
+```
+
+**Example Output:**
+
+```json
+{
+  "success": true,
+  "is_hebrew": true,
+  "original": "שלום עולם",
+  "translated": "Hello world",
+  "final_prompt": "Hello world . Important! Reply in Hebrew",
+  "response_language": "Hebrew",
+  "token_savings_estimate": "Up to 40% on input tokens"
+}
+```
+
+**Then send `final_prompt` to the LLM:**
+
+```bash
+# Copy the final_prompt and use it in your LLM call
+"Hello world . Important! Reply in Hebrew"
 ```
 
 ---
 
-## Usage
+### 🟩 OpenCode
 
-### Basic Usage
+#### Installation
 
 ```bash
-# Simple Hebrew prompt
-node hebrew-translator.js "שלום עולם"
+# 1. Copy the skill directory
+cp -r hebrew-token-saver/skills/opencode ~/.opencode/skills/hebrew-auto-translate
 
-# Output:
-# Original prompt:
-# שלום עולם
-#
-# Detection result:
-#   Is Hebrew: Yes ✓
-#
-# Translation:
-#   Hello world
-#
-# Final prompt (send to LLM):
-# Hello world . Important! Reply in Hebrew
+# 2. Verify installation
+ls -la ~/.opencode/skills/hebrew-auto-translate/
+
+# 3. Configure in settings.json (optional)
+cat >> ~/.opencode/settings.json << 'EOF'
+{
+  "skills": {
+    "hebrew-auto-translate": {
+      "enabled": true,
+      "autoTranslate": true,
+      "responseLanguage": "hebrew",
+      "useRtlFormatting": false
+    }
+  }
+}
+EOF
+
+# 4. Restart OpenCode
 ```
 
-### Force English Response (--english)
+#### Usage
 
-Use `--english` when you want the LLM to respond in English instead of Hebrew. This saves additional tokens on the response.
+**Automatic Mode (Default):**
 
-```bash
-# Hebrew prompt, English response
-node hebrew-translator.js "שלום עולם" --english
+Just type in Hebrew - the skill automatically handles everything:
 
-# Final prompt sent to LLM:
-# Hello world . Important! Reply in English only
+```
+> איך מכינים חלבה?
 
-# Token savings: Input (40%) + Output (40%) = Up to 80% total savings!
+[Skill automatically: Detects Hebrew → Translates → Sends to LLM]
+[LLM responds in Hebrew]
 ```
 
-### Force RTL Formatting (--rtl)
-
-Use `--rtl` to force right-to-left formatting for Hebrew output using Unicode BIDI control characters.
+**Manual Mode:**
 
 ```bash
-# Hebrew prompt with RTL formatting
-node hebrew-translator.js "שלום עולם" --rtl
+# Basic translation
+> /hebrew-translate "שלום עולם"
 
-# Final prompt sent to LLM:
-# ‮שלום עולם. Important! Reply in Hebrew Use RTL formatting...‬
+# Request English response
+> /hebrew-translate "שלום עולם" --english
 
-# The output will be properly formatted for Hebrew display
+# Request RTL formatting
+> /hebrew-translate "שלום עולם" --rtl
+
+# Force translation
+> /hebrew-translate "mixed text שלום" --force
 ```
 
-### Combining Options
+**Example Output:**
+
+```
+=== Hebrew Translation ===
+Original: שלום עולם
+Translated: Hello world
+Response Language: Hebrew
+Token Savings: Up to 40% on input tokens
+
+Final Prompt: Hello world . Important! Reply in Hebrew
+=========================
+```
+
+---
+
+## Features
+
+### Command-Line Flags
+
+| Flag | Description | Example |
+|------|-------------|---------|
+| `--english` | LLM replies in English instead of Hebrew | `hebrew-translate "שלום" --english` |
+| `--rtl` | Forces RTL formatting for Hebrew output | `hebrew-translate "שלום" --rtl` |
+| `--force` | Forces translation even if not Hebrew | `hebrew-translate "Hi" --force` |
+| `--api-only` | Use only MyMemory API (no local fallback) | `hebrew-translate --api-only "שלום"` |
+| `--local-only` | Use only local model (skip API) | `hebrew-translate --local-only "שלום"` |
+
+### Flag Combinations
 
 ```bash
-# Force translation even if text is not detected as Hebrew
-node hebrew-translator.js "Hi" --force
-
-# Hybrid mode: API first, then local fallback
-node hebrew-translator-hybrid.js "שלום עולם"
-
-# Local-only mode (no API calls)
-npm install @xenova/transformers
-node hebrew-translator-hybrid.js --local-only "שלום עולם"
+# These are incompatible:
+hebrew-translate "שלום עולם" --rtl --english
+# Error: --rtl and --english options are incompatible.
 ```
 
 ---
@@ -228,32 +310,6 @@ node hebrew-translator-hybrid.js "שלום עולם"
 
 ---
 
-## Token Savings Calculator
-
-```javascript
-// Example calculation
-const hebrewPrompt = "איך מכינים חלבה?";
-const englishPrompt = "How to make halva?";
-
-// Approximate token counts
-const hebrewTokens = 8;
-const englishTokens = 5;
-
-const savings = ((hebrewTokens - englishTokens) / hebrewTokens) * 100;
-console.log(`Token savings: ${savings}%`); // 37.5%
-```
-
-### Real-World Savings
-
-| Use Case | Hebrew Tokens | English Tokens | Savings |
-|----------|---------------|----------------|---------|
-| Simple greeting | 4 | 2 | 50% |
-| Question | 8-10 | 5-6 | 37-40% |
-| Complex request | 50-60 | 30-35 | 40-42% |
-| Full conversation | 200-250 | 120-140 | 40-44% |
-
----
-
 ## API Reference
 
 ### Command-Line Interface
@@ -261,13 +317,6 @@ console.log(`Token savings: ${savings}%`); // 37.5%
 ```bash
 # Basic usage
 hebrew-translate <prompt> [options]
-
-# Options:
-  --english     Force LLM to reply in English
-  --rtl         Force RTL formatting for Hebrew output
-  --force       Force translation even if not Hebrew
-  --api-only    Use only MyMemory API (no local fallback)
-  --local-only  Use only local model (skip API)
 
 # Examples:
 hebrew-translate "שלום עולם"
@@ -383,15 +432,6 @@ MIT License - Feel free to use and modify.
 2. **מורפולוגיה**: מילים עבריות צפופות יותר במשמעות
 3. **טוקניזציה**: מזהה הטוקנים של LLMים מותאם לאנגלית
 
-### השוואת עלות טוקנים
-
-| פרומפט | שפה | טוקנים | עלות (ב-$0.01 ל-1K טוקנים) |
-|--------|-----|--------|---------------------------|
-| `שלום עולם, איך מכינים חלבה?` | עברית | ~15-20 | $0.00015-0.00020 |
-| `Hello world, how to make halva?` | אנגלית | ~8-10 | $0.00008-0.00010 |
-
-**חיסכון: עד 50% על טוקני קלט!**
-
 ### דוגמא מהעולם האמיתי
 
 ```bash
@@ -436,126 +476,217 @@ Fibonacci numbers recursively. Can you help me?"
 
 ---
 
-## התקנה
+## התקנה ושימוש לפי פלטפורמה
 
-### עבור Pi.dev
+### 🟦 Pi.dev
+
+#### התקנה
 
 ```bash
-# הורדת המאגר
+# 1. הורדת המאגר
 git clone https://github.com/your-username/hebrew-token-saver.git
 
-# העתקה לספריית הסקילים של pi
-cp -r hebrew-token-saver ~/.pi/skills/
+# 2. העתקת סקיל Pi.dev לספריית הסקילים
+cp -r hebrew-token-saver/skills/pi-dev ~/.pi/skills/hebrew-auto-translate
 
-# הסקיל יטען אוטומטית כאשר תשתמש ב-pi
+# 3. אימות ההתקנה
+ls -la ~/.pi/skills/hebrew-auto-translate/
+
+# 4. הפעלה מחדש של pi.dev (אם רץ)
+# הסקיל יטען אוטומטית בסיבוב הבא
 ```
 
-### עבור Claude Code
+#### שימוש
 
-```bash
-# אפשרות 1: הוספה לספריית הכלים
-mkdir -p ~/.claude/tools
-cp hebrew-translator.tool.json ~/.claude/tools/
+**מצב אוטומטי (ברירת מחדל):**
 
-# אפשרות 2: שימוש כסקריפט עצמאי
-npm install -g ./hebrew-token-saver
+פשוט כתוב בעברית - הסקיל מטפל בהכל אוטומטית:
 
-# ואז שימוש בפרומפטים:
-hebrew-translate "שלום עולם"
+```
+> איך מכינים חלבה?
+
+[הסקיל אוטומטית: מזדהה עברית → מתרגם → שולח ל-LLM]
+[ה-LLM עונה בעברית]
 ```
 
-### עבור Open Code
+**מצב ידני עם דגלים:**
 
 ```bash
-# הוספה לספריית הסקילים
-cp -r hebrew-token-saver ~/.opencode/skills/
+# אכוף תשובה באנגלית (חוסך יותר טוקנים)
+> /hebrew-translate --english "שלום עולם"
 
-# תצורה בקובץ settings.json:
+# אכוף פורמט RTL
+> /hebrew-translate --rtl "שלום עולם"
+
+# אכוף תרגום גם אם לא זוהה כעברית
+> /hebrew-translate --force "mixed text שלום"
+```
+
+**תצורה (אופציונלי):**
+
+הוסף ל-`~/.pi/config.json`:
+
+```json
 {
   "skills": {
-    "hebrew-token-saver": {
+    "hebrew-auto-translate": {
       "enabled": true,
-      "autoTranslate": true
+      "autoTranslate": true,
+      "useHybridMode": false,
+      "defaultResponseLanguage": "hebrew"
     }
   }
 }
 ```
 
-### התחלה מהירה (עצמאי)
+---
+
+### 🟨 Claude Code
+
+#### התקנה
 
 ```bash
-# אין צורך בהתקנה - פשוט הרץ!
-node hebrew-translator.js "שלום עולם"
+# 1. יצירת ספריית כלים אם היא לא קיימת
+mkdir -p ~/.claude/tools
 
-# או עם npm
-npm install ./hebrew-token-saver
-npx hebrew-translate "שלום עולם"
+# 2. העתקת קבצי הכלי
+cp hebrew-token-saver/skills/claude-code/hebrew-translator-mcp.js ~/.claude/tools/
+cp hebrew-token-saver/skills/claude-code/hebrew-translator.tool.json ~/.claude/tools/
+
+# 3. אימות ההתקנה
+ls -la ~/.claude/tools/hebrew-translator*
+
+# 4. הפעלה מחדש של Claude Code
+```
+
+#### שימוש
+
+**שימוש בכלי ישירות:**
+
+```bash
+# תרגום בסיסי
+/tool hebrew_translator --prompt "שלום עולם"
+
+# בקשת תשובה באנגלית
+/tool hebrew_translator --prompt "שלום עולם" --reply-in-english
+
+# בקשת פורמט RTL
+/tool hebrew_translator --prompt "שלום עולם" --force-rtl
+```
+
+**דוגמת פלט:**
+
+```json
+{
+  "success": true,
+  "is_hebrew": true,
+  "original": "שלום עולם",
+  "translated": "Hello world",
+  "final_prompt": "Hello world . Important! Reply in Hebrew",
+  "response_language": "Hebrew",
+  "token_savings_estimate": "Up to 40% on input tokens"
+}
+```
+
+**אז שלח את `final_prompt` ל-LLM:**
+
+```bash
+# העתק את final_prompt ושתמש בו בקריאה ל-LLM שלך
+"Hello world . Important! Reply in Hebrew"
 ```
 
 ---
 
-## שימוש
+### 🟩 OpenCode
 
-### שימוש בסיסי
+#### התקנה
 
 ```bash
-# פרומפט עברי פשוט
-node hebrew-translator.js "שלום עולם"
+# 1. העתקת ספריית הסקיל
+cp -r hebrew-token-saver/skills/opencode ~/.opencode/skills/hebrew-auto-translate
 
-# פלט:
-# Original prompt:
-# שלום עולם
-#
-# Detection result:
-#   Is Hebrew: Yes ✓
-#
-# Translation:
-#   Hello world
-#
-# Final prompt (send to LLM):
-# Hello world . Important! Reply in Hebrew
+# 2. אימות ההתקנה
+ls -la ~/.opencode/skills/hebrew-auto-translate/
+
+# 3. תצורה בקובץ settings.json (אופציונלי)
+cat >> ~/.opencode/settings.json << 'EOF'
+{
+  "skills": {
+    "hebrew-auto-translate": {
+      "enabled": true,
+      "autoTranslate": true,
+      "responseLanguage": "hebrew",
+      "useRtlFormatting": false
+    }
+  }
+}
+EOF
+
+# 4. הפעלה מחדש של OpenCode
 ```
 
-### תשובה באנגלית (--english)
+#### שימוש
 
-השתמש ב-`--english` כאשר אתה רוצה שה-LLM יענה באנגלית במקום עברית. זה חוסך טוקנים נוספים בתשובה.
+**מצב אוטומטי (ברירת מחדל):**
 
-```bash
-# פרומפט עברי, תשובה באנגלית
-node hebrew-translator.js "שלום עולם" --english
+פשוט כתוב בעברית - הסקיל מטפל בהכל אוטומטית:
 
-# הפרומפט הסופי שישלח ל-LLM:
-# Hello world . Important! Reply in English only
+```
+> איך מכינים חלבה?
 
-# חיסכון בטוקנים: קלט (40%) + פלט (40%) = עד 80% חיסכון כולל!
+[הסקיל אוטומטית: מזדהה עברית → מתרגם → שולח ל-LLM]
+[ה-LLM עונה בעברית]
 ```
 
-### פורמט RTL (--rtl)
-
-השתמש ב-`--rtl` כדי לאכוף פורמט ימין-לשמאל לתשובה העברית באמצעות תווים מיוחדים של Unicode BIDI.
+**מצב ידני:**
 
 ```bash
-# פרומפט עברי עם פורמט RTL
-node hebrew-translator.js "שלום עולם" --rtl
+# תרגום בסיסי
+> /hebrew-translate "שלום עולם"
 
-# הפרומפט הסופי שישלח ל-LLM:
-# ‮שלום עולם. Important! Reply in Hebrew Use RTL formatting...‬
+# בקשת תשובה באנגלית
+> /hebrew-translate "שלום עולם" --english
 
-# הפלט יוצג עם פורמט נכון לעברית
+# בקשת פורמט RTL
+> /hebrew-translate "שלום עולם" --rtl
+
+# אכיפת תרגום
+> /hebrew-translate "mixed text שלום" --force
 ```
 
-### שילוב אפשרויות
+**דוגמת פלט:**
+
+```
+=== Hebrew Translation ===
+Original: שלום עולם
+Translated: Hello world
+Response Language: Hebrew
+Token Savings: Up to 40% on input tokens
+
+Final Prompt: Hello world . Important! Reply in Hebrew
+=========================
+```
+
+---
+
+## תכונות
+
+### דגלי שורת פקודה
+
+| דגל | תיאור | דוגמא |
+|-----|-------|-------|
+| `--english` | ה-LLM עונה באנגלית במקום עברית | `hebrew-translate "שלום" --english` |
+| `--rtl` | מאכוף פורמט RTL לפלט עברי | `hebrew-translate "שלום" --rtl` |
+| `--force` | מאכוף תרגום גם אם לא עברית | `hebrew-translate "Hi" --force` |
+| `--api-only` | השתמש רק ב-MyMemory API (ללא fallback מקומי) | `hebrew-translate --api-only "שלום"` |
+| `--local-only` | השתמש רק במודל המקומי (דלג על API) | `hebrew-translate --local-only "שלום"` |
+
+### שילובי דגלים
 
 ```bash
-# אכיפת תרגום גם אם הטקסט לא זוהה כעברי
-node hebrew-translator.js "Hi" --force
-
-# מצב היברידי: API קודם, אחר כך מודל מקומי
-node hebrew-translator-hybrid.js "שלום עולם"
-
-# מצב מקומי בלבד (ללא קריאות API)
-npm install @xenova/transformers
-node hebrew-translator-hybrid.js --local-only "שלום עולם"
+# אלו לא תואמים:
+hebrew-translate "שלום עולם" --rtl --english
+# שגיאה: --rtl ו- --english אינם תואמים.
 ```
 
 ---
@@ -599,32 +730,6 @@ node hebrew-translator-hybrid.js "שלום עולם"
 
 ---
 
-## מחשבון חיסכון בטוקנים
-
-```javascript
-// דוגמא לחישוב
-const hebrewPrompt = "איך מכינים חלבה?";
-const englishPrompt = "How to make halva?";
-
-// ספירת טוקנים משוערת
-const hebrewTokens = 8;
-const englishTokens = 5;
-
-const savings = ((hebrewTokens - englishTokens) / hebrewTokens) * 100;
-console.log(`Token savings: ${savings}%`); // 37.5%
-```
-
-### חיסכון מהעולם האמיתי
-
-| מקרה שימוש | טוקנים עבריים | טוקנים באנגלית | חיסכון |
-|------------|----------------|-----------------|--------|
-| ברכה פשוטה | 4 | 2 | 50% |
-| שאלה | 8-10 | 5-6 | 37-40% |
-| בקשה מורכבת | 50-60 | 30-35 | 40-42% |
-| שיחה מלאה | 200-250 | 120-140 | 40-44% |
-
----
-
 ## API Reference
 
 ### Command-Line Interface
@@ -632,13 +737,6 @@ console.log(`Token savings: ${savings}%`); // 37.5%
 ```bash
 # שימוש בסיסי
 hebrew-translate <prompt> [options]
-
-# אפשרויות:
-  --english     אכוף ל-LLM לענות באנגלית
-  --rtl         אכוף פורמט RTL לפלט עברי
-  --force       אכוף תרגום גם אם לא עברית
-  --api-only    השתמש רק ב-MyMemory API (ללא fallback מקומי)
-  --local-only  השתמש רק במודל המקומי (דלג על API)
 
 # דוגמאות:
 hebrew-translate "שלום עולם"

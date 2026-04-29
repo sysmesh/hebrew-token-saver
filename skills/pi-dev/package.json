@@ -1,0 +1,11 @@
+{
+  "name": "hebrew-auto-translate-pi-dev",
+  "version": "1.0.0",
+  "description": "Pi.dev skill for automatic Hebrew to English translation",
+  "main": "interceptor.js",
+  "type": "skill",
+  "platform": "pi.dev",
+  "keywords": ["hebrew", "translation", "pi.dev", "skill", "prompt-interceptor"],
+  "license": "MIT",
+  "dependencies": {}
+}

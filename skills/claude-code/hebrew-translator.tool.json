@@ -1,0 +1,37 @@
+{
+  "type": "tool",
+  "tool": {
+    "name": "hebrew_translator",
+    "description": "Translates Hebrew prompts to English and requests responses in a specific language. Use this tool when you receive Hebrew text that needs to be processed by an LLM. This saves tokens by translating to English (which uses fewer tokens) while still getting responses in the user's preferred language.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "prompt": {
+          "type": "string",
+          "description": "The Hebrew text to translate and process"
+        },
+        "reply_in_english": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, requests the LLM to reply in English. If false (default), requests reply in Hebrew. Use true to save additional tokens on the response."
+        },
+        "force_rtl": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, requests RTL formatting for Hebrew output. Incompatible with reply_in_english."
+        },
+        "force_translate": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, forces translation even if text is not detected as Hebrew"
+        }
+      },
+      "required": ["prompt"],
+      "additionalProperties": false
+    }
+  },
+  "implementation": {
+    "type": "javascript",
+    "code": "const https = require('https');\n\nasync function translateHebrew(text) {\n  return new Promise((resolve, reject) => {\n    const encoded = encodeURIComponent(text.trim());\n    const url = 'https://api.mymemory.net/api/transliterate?q=' + encoded + '&langpair=iw|en';\n    \n    https.get(url, (res) => {\n      let data = '';\n      res.on('data', (chunk) => { data += chunk; });\n      res.on('end', () => {\n        try {\n          const parsed = JSON.parse(data);\n          resolve(parsed.responseData?.translatedText || text);\n        } catch (e) {\n          resolve(text);\n        }\n      });\n    }).on('error', () => resolve(text));\n  });\n}\n\nfunction isHebrew(text) {\n  if (!text || typeof text !== 'string') return false;\n  const hebrewChars = text.match(/\\u0590-\\u05FF/g);\n  return hebrewChars && (hebrewChars.length / text.length) >= 0.2;\n}\n\nasync function hebrew_translator(args) {\n  const { prompt, reply_inEnglish = false, force_rtl = false, force_translate = false } = args;\n  \n  // Validate options\n  if (force_rtl && reply_inEnglish) {\n    return {\n      success: false,\n      error: 'Options --rtl and --english are incompatible'\n    };\n  }\n  \n  // Check if Hebrew\n  const hebrew = isHebrew(prompt) || force_translate;\n  \n  if (!hebrew) {\n    return {\n      success: true,\n      is_hebrew: false,\n      original: prompt,\n      translated: null,\n      final_prompt: prompt,\n      message: 'Text is not Hebrew, returning as-is'\n    };\n  }\n  \n  // Translate\n  const translated = await translateHebrew(prompt);\n  \n  // Build response instruction\n  let instruction = reply_inEnglish\n    ? 'Important! Reply in English only'\n    : 'Important! Reply in Hebrew';\n  \n  if (force_rtl && !reply_inEnglish) {\n    instruction += ' Use RTL formatting with proper Unicode BIDI markers.';\n  }\n  \n  const finalPrompt = `${translated}. ${instruction}`;\n  \n  return {\n    success: true,\n    is_hebrew: true,\n    original: prompt,\n    translated: translated,\n    final_prompt: finalPrompt,\n    response_language: reply_inEnglish ? 'English' : 'Hebrew',\n    token_savings_estimate: 'Up to 40% on input tokens'\n  };\n}\n\nmodule.exports = { hebrew_translator };"
+  }
+}
