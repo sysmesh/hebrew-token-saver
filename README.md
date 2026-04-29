@@ -161,10 +161,13 @@ REM 4. Restart Claude Code
 #### Installation on macOS
 
 ```bash
-# 1. Copy the skill directory
+# 1. Create skills directory if it doesn't exist
+mkdir -p ~/.opencode/skills
+
+# 2. Copy the skill directory
 cp -r hebrew-token-saver/skills/opencode ~/.opencode/skills/hebrew-auto-translate
 
-# 2. Verify installation
+# 3. Verify installation
 ls -la ~/.opencode/skills/hebrew-auto-translate/
 
 # 3. Configure in settings.json (optional)
@@ -189,10 +192,13 @@ EOF
 **Using PowerShell:**
 
 ```powershell
-# 1. Copy the skill directory
+# 1. Create skills directory if it doesn't exist
+New-Item -ItemType Directory -Force -Path "$HOME\.opencode\skills"
+
+# 2. Copy the skill directory
 Copy-Item -Recurse "hebrew-token-saver\skills\opencode" -Destination "$HOME\.opencode\skills\hebrew-auto-translate"
 
-# 2. Verify installation
+# 3. Verify installation
 Get-ChildItem "$HOME\.opencode\skills\hebrew-auto-translate"
 
 # 3. Configure in settings.json (optional)
@@ -214,10 +220,13 @@ $settings | ConvertTo-Json | Out-File "$HOME\.opencode\settings.json" -Append
 **Using Command Prompt:**
 
 ```cmd
-REM 1. Copy the skill directory
+REM 1. Create skills directory if it doesn't exist
+mkdir %USERPROFILE%\.opencode\skills
+
+REM 2. Copy the skill directory
 xcopy /E /I /Y hebrew-token-saver\skills\opencode %USERPROFILE%\.opencode\skills\hebrew-auto-translate\
 
-REM 2. Verify installation
+REM 3. Verify installation
 dir %USERPROFILE%\.opencode\skills\hebrew-auto-translate\
 
 REM 3. Configure in settings.json (optional)
@@ -288,10 +297,13 @@ Final Prompt: Hello world . Important! Reply in Hebrew
 # 1. Clone or download the repository
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-# 2. Copy the Pi.dev skill to your skills directory
+# 2. Create skills directory if it doesn't exist
+mkdir -p ~/.pi/skills
+
+# 3. Copy the Pi.dev skill to your skills directory
 cp -r hebrew-token-saver/skills/pi-dev ~/.pi/skills/hebrew-auto-translate
 
-# 3. Verify installation
+# 4. Verify installation
 ls -la ~/.pi/skills/hebrew-auto-translate/
 
 # 4. Restart pi.dev (if running)
@@ -306,10 +318,13 @@ ls -la ~/.pi/skills/hebrew-auto-translate/
 # 1. Clone or download the repository
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-# 2. Copy the Pi.dev skill to your skills directory
+# 2. Create skills directory if it doesn't exist
+New-Item -ItemType Directory -Force -Path "$HOME\.pi\skills"
+
+# 3. Copy the Pi.dev skill to your skills directory
 Copy-Item -Recurse "hebrew-token-saver\skills\pi-dev" -Destination "$HOME\.pi\skills\hebrew-auto-translate"
 
-# 3. Verify installation
+# 4. Verify installation
 Get-ChildItem "$HOME\.pi\skills\hebrew-auto-translate"
 
 # 4. Restart pi.dev (if running)
@@ -322,10 +337,13 @@ Get-ChildItem "$HOME\.pi\skills\hebrew-auto-translate"
 REM 1. Clone or download the repository
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-REM 2. Copy the Pi.dev skill to your skills directory
+REM 2. Create skills directory if it doesn't exist
+mkdir %USERPROFILE%\.pi\skills
+
+REM 3. Copy the Pi.dev skill to your skills directory
 xcopy /E /I /Y hebrew-token-saver\skills\pi-dev %USERPROFILE%\.pi\skills\hebrew-auto-translate\
 
-REM 3. Verify installation
+REM 4. Verify installation
 dir %USERPROFILE%\.pi\skills\hebrew-auto-translate\
 
 REM 4. Restart pi.dev (if running)
@@ -701,10 +719,13 @@ REM 4. הפעלה מחדש של Claude Code
 #### התקנה ב-macOS
 
 ```bash
-# 1. העתקת ספריית הסקיל
+# 1. יצירת ספריית סקילים אם היא לא קיימת
+mkdir -p ~/.opencode/skills
+
+# 2. העתקת ספריית הסקיל
 cp -r hebrew-token-saver/skills/opencode ~/.opencode/skills/hebrew-auto-translate
 
-# 2. אימות ההתקנה
+# 3. אימות ההתקנה
 ls -la ~/.opencode/skills/hebrew-auto-translate/
 
 # 3. תצורה בקובץ settings.json (אופציונלי)
@@ -729,10 +750,13 @@ EOF
 **באמצעות PowerShell:**
 
 ```powershell
-# 1. העתקת ספריית הסקיל
+# 1. יצירת ספריית סקילים אם היא לא קיימת
+New-Item -ItemType Directory -Force -Path "$HOME\.opencode\skills"
+
+# 2. העתקת ספריית הסקיל
 Copy-Item -Recurse "hebrew-token-saver\skills\opencode" -Destination "$HOME\.opencode\skills\hebrew-auto-translate"
 
-# 2. אימות ההתקנה
+# 3. אימות ההתקנה
 Get-ChildItem "$HOME\.opencode\skills\hebrew-auto-translate"
 
 # 3. תצורה בקובץ settings.json (אופציונלי)
@@ -754,10 +778,13 @@ $settings | ConvertTo-Json | Out-File "$HOME\.opencode\settings.json" -Append
 **באמצעות Command Prompt:**
 
 ```cmd
-REM 1. העתקת ספריית הסקיל
+REM 1. יצירת ספריית סקילים אם היא לא קיימת
+mkdir %USERPROFILE%\.opencode\skills
+
+REM 2. העתקת ספריית הסקיל
 xcopy /E /I /Y hebrew-token-saver\skills\opencode %USERPROFILE%\.opencode\skills\hebrew-auto-translate\
 
-REM 2. אימות ההתקנה
+REM 3. אימות ההתקנה
 dir %USERPROFILE%\.opencode\skills\hebrew-auto-translate\
 
 REM 3. תצורה בקובץ settings.json (אופציונלי)
@@ -995,10 +1022,13 @@ MIT License - חופשי לשימוש ושינוי.
 # 1. הורדת המאגר
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-# 2. העתקת סקיל Pi.dev לספריית הסקילים
+# 2. יצירת ספריית סקילים אם היא לא קיימת
+mkdir -p ~/.pi/skills
+
+# 3. העתקת סקיל Pi.dev לספריית הסקילים
 cp -r hebrew-token-saver/skills/pi-dev ~/.pi/skills/hebrew-auto-translate
 
-# 3. אימות ההתקנה
+# 4. אימות ההתקנה
 ls -la ~/.pi/skills/hebrew-auto-translate/
 
 # 4. הפעלה מחדש של pi.dev (אם רץ)
@@ -1013,10 +1043,13 @@ ls -la ~/.pi/skills/hebrew-auto-translate/
 # 1. הורדת המאגר
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-# 2. העתקת סקיל Pi.dev לספריית הסקילים
+# 2. יצירת ספריית סקילים אם היא לא קיימת
+New-Item -ItemType Directory -Force -Path "$HOME\.pi\skills"
+
+# 3. העתקת סקיל Pi.dev לספריית הסקילים
 Copy-Item -Recurse "hebrew-token-saver\skills\pi-dev" -Destination "$HOME\.pi\skills\hebrew-auto-translate"
 
-# 3. אימות ההתקנה
+# 4. אימות ההתקנה
 Get-ChildItem "$HOME\.pi\skills\hebrew-auto-translate"
 
 # 4. הפעלה מחדש של pi.dev (אם רץ)
@@ -1029,10 +1062,13 @@ Get-ChildItem "$HOME\.pi\skills\hebrew-auto-translate"
 REM 1. הורדת המאגר
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 
-REM 2. העתקת סקיל Pi.dev לספריית הסקילים
+REM 2. יצירת ספריית סקילים אם היא לא קיימת
+mkdir %USERPROFILE%\.pi\skills
+
+REM 3. העתקת סקיל Pi.dev לספריית הסקילים
 xcopy /E /I /Y hebrew-token-saver\skills\pi-dev %USERPROFILE%\.pi\skills\hebrew-auto-translate\
 
-REM 3. אימות ההתקנה
+REM 4. אימות ההתקנה
 dir %USERPROFILE%\.pi\skills\hebrew-auto-translate\
 
 REM 4. הפעלה מחדש של pi.dev (אם רץ)
