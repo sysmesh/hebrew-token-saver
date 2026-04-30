@@ -8,6 +8,8 @@
     "hebrew-translate-hybrid": "./hebrew-translator-hybrid.js"
   },
   "scripts": {
+    "bundle": "npx esbuild hebrew-translator-mcp.js --bundle --platform=node --target=node14 --outfile=dist/hebrew-translator-mcp.js --banner:js=\"#!/usr/bin/env node\"",
+    "install-claude": "node install-claude.js",
     "test": "node test.js",
     "test-rtl": "node test-rtl.js",
     "demo": "node hebrew-translator.js 'איך מכינים חלבה?'",
@@ -33,7 +35,7 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@xenova/transformers": "^2.17.2"
-  },
-  "devDependencies": {}
+  }
 }

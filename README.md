@@ -105,7 +105,7 @@ Add the MCP server configuration to `~/.claude/settings.json`:
   "mcpServers": {
     "hebrew-translator": {
       "command": "node",
-      "args": ["/Users/gilad/.claude/tools/hebrew-translator-mcp.js"]
+      "args": ["~/.claude/tools/hebrew-translator-mcp.js"]
     }
   }
 }
@@ -735,7 +735,7 @@ const { ... } = require('/full/path/to/hebrew-token-saver/lib/common');
   "mcpServers": {
     "hebrew-translator": {
       "command": "node",
-      "args": ["/Users/gilad/.claude/tools/hebrew-translator-mcp.js"]
+      "args": ["~/.claude/tools/hebrew-translator-mcp.js"]
     }
   }
 }

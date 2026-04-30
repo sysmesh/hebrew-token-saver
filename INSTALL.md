@@ -1,282 +1,111 @@
-# Installation Guide - Hebrew Token Saver
+# Installation — Hebrew Translator MCP Server
 
-## Quick Installation by Platform
+A zero-dependency, ~11 KB bundled server that auto-translates Hebrew prompts to English for Claude Code.
 
-### Pi.dev Installation
+## Prerequisites
 
-**Option 1: Global Installation (Recommended - available in all projects)**
+- Node.js 14+
+- npm (bundled with Node)
+
+## Quick Install — Claude Code
 
 ```bash
-# 1. Clone or download the repository
 git clone https://github.com/sysmesh/hebrew-token-saver.git
-
-# 2. Create agent skills directory if it doesn't exist
-mkdir -p ~/.pi/agent/skills
-
-# 3. Copy the Pi.dev skill to your agent skills directory
-cp -r skills/pi-dev ~/.pi/agent/skills/hebrew-auto-translate
-
-# 4. Verify installation
-ls -la ~/.pi/agent/skills/hebrew-auto-translate/
-
-# 5. Restart pi.dev (if running)
-# The skill will auto-load on next session
+cd hebrew-token-saver
+npm install            # install build dependencies (esbuild)
+npm run bundle         # create dist/hebrew-translator-mcp.js (zero deps, ~11 KB)
+npm run install-claude # copy to ~/.claude/tools/ and configure settings.json
 ```
 
-**Option 2: Project-Level Installation (only in current project)**
+Restart Claude Code — the `hebrew_translate` tool will be available.
 
-```bash
-# 1. From your project directory, create .pi/skills directory
-mkdir -p .pi/skills
+### What Happens Under the Hood
 
-# 2. Copy the skill
-cp -r skills/pi-dev .pi/skills/hebrew-auto-translate
+1. **`npm run bundle`** — esbuild bundles `hebrew-translator-mcp-server.js` into a single CommonJS file at `dist/hebrew-translator-mcp.js`. The output uses only Node built-ins, zero npm dependencies.
+2. **`npm run install-claude`** — runs `install-claude.js`, which:
+   - Copies the bundle to `~/.claude/tools/hebrew-translator-mcp.js`
+   - Adds an MCP server entry to `~/.claude/settings.json`:
 
-# 3. Verify installation
-ls -la .pi/skills/hebrew-auto-translate/
-```
-
-**Usage in Pi.dev:**
-```bash
-# Automatic mode - just type in Hebrew
-> איך מכינים חלבה?
-
-# Manual mode with flags
-> /hebrew-translate --english "שלום עולם"
-> /hebrew-translate --rtl "שלום עולם"
-```
-
----
-
-### Claude Code Installation
-
-```bash
-# 1. Create tools directory if it doesn't exist
-mkdir -p ~/.claude/tools
-
-# 2. Copy the tool files
-cp skills/claude-code/hebrew-translator-mcp.js ~/.claude/tools/
-cp skills/claude-code/hebrew-translator.tool.json ~/.claude/tools/
-
-# 3. Verify installation
-ls -la ~/.claude/tools/hebrew-translator*
-
-# 4. Restart Claude Code
-```
-
-**Usage in Claude Code:**
-```bash
-# Use the tool directly
-/tool hebrew_translator --prompt "שלום עולם"
-
-# Request English response
-/tool hebrew_translator --prompt "שלום עולם" --reply-in-english
-
-# Request RTL formatting
-/tool hebrew_translator --prompt "שלום עולם" --force-rtl
-```
-
----
-
-### OpenCode Installation
-
-```bash
-# 1. Copy the skill directory
-cp -r skills/opencode ~/.opencode/skills/hebrew-auto-translate
-
-# 2. Verify installation
-ls -la ~/.opencode/skills/hebrew-auto-translate/
-
-# 3. Configure in settings.json (optional)
-cat >> ~/.opencode/settings.json << 'EOF'
+```json
 {
-  "skills": {
-    "hebrew-auto-translate": {
-      "enabled": true,
-      "autoTranslate": true,
-      "responseLanguage": "hebrew",
-      "useRtlFormatting": false
+  "mcpServers": {
+    "hebrew-translator": {
+      "command": "node",
+      "args": ["~/.claude/tools/hebrew-translator-mcp.js"]
     }
   }
 }
-EOF
-
-# 4. Restart OpenCode
 ```
 
-**Usage in OpenCode:**
+## Updating
+
+Re-run the bundle and install whenever you pull changes:
+
 ```bash
-# Automatic mode - just type in Hebrew
-> איך מכינים חלבה?
-
-# Manual mode
-> /hebrew-translate "שלום עולם"
-> /hebrew-translate "שלום עולם" --english
-> /hebrew-translate "שלום עולם" --rtl
+git pull && npm run bundle && npm run install-claude
 ```
 
----
+## Uninstall
+
+Remove the `hebrew-translator` entry from `~/.claude/settings.json`, then:
+
+```bash
+rm ~/.claude/tools/hebrew-translator-mcp.js
+```
 
 ## Verification
+
+### Test the Bundle Exists
+
+```bash
+ls -la dist/hebrew-translator-mcp.js
+# Should be ~11 KB, no imports of node_modules
+```
 
 ### Test Hebrew Detection
 
 ```bash
-# Run the test suite
-cd /path/to/hebrew-token-saver
 node test.js
-
-# Expected output:
-# Testing Hebrew Detection
-# ========================
-# 
-# Test 1: Pure Hebrew
-#   Input: "שלום עולם"
-#   Expected: true, Got: true - ✓ PASS
-# ...
-# Results: 9 passed, 0 failed
+# Expected: all tests pass
 ```
 
 ### Test Translation
 
 ```bash
-# Test basic translation
 node hebrew-translator.js "שלום עולם"
-
-# Expected output:
-# Original prompt:
-# שלום עולם
-#
-# Detection result:
-#   Is Hebrew: Yes ✓
-#
-# Translation:
-#   Hello world
-#
-# Final prompt (send to LLM):
-# Hello world . Important! Reply in Hebrew
+# Expected output includes: "Hello world . Important! Reply in Hebrew"
 ```
-
-### Test --english Flag
-
-```bash
-node hebrew-translator.js "שלום עולם" --english
-
-# Final prompt should end with:
-# Hello world . Important! Reply in English only
-```
-
-### Test --rtl Flag
-
-```bash
-node hebrew-translator.js "שלום עולם" --rtl
-
-# Final prompt should be wrapped with RTL markers
-# and include RTL formatting instruction
-```
-
----
 
 ## Troubleshooting
 
-### Skill Not Loading
+### "Bundled server not found at: dist/hebrew-translator-mcp.js"
 
-**Pi.dev:**
-```bash
-# Check if skill is in correct location
-ls -la ~/.pi/skills/hebrew-auto-translate/
+Run `npm run bundle` first. If esbuild is missing, ensure you ran `npm install`.
 
-# Check pi.dev logs for errors
-~/.pi/logs/*.log
-```
+### MCP Server Not Loading in Claude Code
 
-**Claude Code:**
-```bash
-# Verify tool files exist
-ls -la ~/.claude/tools/hebrew-translator*
+1. Verify the file exists: `ls ~/.claude/tools/hebrew-translator-mcp.js`
+2. Check settings.json has the entry: `cat ~/.claude/settings.json | grep hebrew`
+3. Restart Claude Code fully (quit and relaunch)
 
-# Check Claude Code configuration
-cat ~/.claude/config.json
-```
+### Translation API Quota Exceeded
 
-**OpenCode:**
-```bash
-# Verify skill files exist
-ls -la ~/.opencode/skills/hebrew-auto-translate/
-
-# Check OpenCode logs
-~/.opencode/logs/*.log
-```
-
-### Translation Not Working
+The MyMemory API has a daily limit of 1000 words. Use the local model fallback:
 
 ```bash
-# Test API connectivity
-curl "https://api.mymemory.net/api/transliterate?q=%D7%A9%D7%9C%D7%95%D7%9D&langpair=iw|en"
-
-# If API is down, use local mode (requires installation)
 npm install @xenova/transformers
 node hebrew-translator-hybrid.js --local-only "שלום עולם"
 ```
 
-### Hebrew Not Detected
-
-```bash
-# Force translation
-/hebrew-translate --force "mixed text שלום"
-
-# Check detection threshold in configuration
-# Default is 20% Hebrew characters
-```
-
----
-
-## Uninstallation
-
-### Pi.dev
-```bash
-rm -rf ~/.pi/skills/hebrew-auto-translate
-```
-
-### Claude Code
-```bash
-rm ~/.claude/tools/hebrew-translator-mcp.js
-rm ~/.claude/tools/hebrew-translator.tool.json
-```
-
-### OpenCode
-```bash
-rm -rf ~/.opencode/skills/hebrew-auto-translate
-```
-
----
-
-## Files Structure
+## Files Structure (MCP Server)
 
 ```
 hebrew-token-saver/
-├── INSTALL.md                      # This file
-├── README_FULL.md                  # Full documentation
-├── hebrew-translator.js            # Standalone translator
-├── hebrew-translator-hybrid.js     # Hybrid translator
-├── test.js                         # Test suite
-└── skills/
-    ├── pi-dev/
-    │   ├── SKILL.md
-    │   ├── interceptor.js
-    │   └── package.json
-    ├── claude-code/
-    │   ├── hebrew-translator.tool.json
-    │   └── hebrew-translator-mcp.js
-    └── opencode/
-        ├── SKILL.json
-        └── skill.js
+├── dist/
+│   └── hebrew-translator-mcp.js      # Bundled, dependency-free server (~11 KB)
+├── hebrew-translator-mcp-server.js   # MCP server source (ESM)
+├── install-claude.js                  # Auto-installer script
+├── lib/
+│   └── common.js                      # Shared translation logic
+└── package.json                       # Scripts: bundle, install-claude
 ```
-
----
-
-## Support
-
-- **Issues**: https://github.com/sysmesh/hebrew-token-saver/issues
-- **Documentation**: See README_FULL.md
-- **API**: MyMemory Translation API (https://www.mymemory.net/api/)
