@@ -66,71 +66,114 @@ Token savings: 40%
 
 ## Installation & Usage by Platform
 
-### 🟨 Claude Code
+### 🟨 Claude Code (MCP Server)
+
+**Important:** Claude Code does not support a `/tool` command natively. The files in `skills/claude-code/` are MCP (Model Context Protocol) server files that need to be configured in Claude's settings.
 
 #### Installation on macOS
+
+**Option 1: Copy to Claude Tools (requires project structure)**
 
 ```bash
 # 1. Create tools directory if it doesn't exist
 mkdir -p ~/.claude/tools
 
-# 2. Copy the tool files
+# 2. Copy the MCP server file (the .tool.json is not used by Claude Code)
 cp hebrew-token-saver/skills/claude-code/hebrew-translator-mcp.js ~/.claude/tools/
-cp hebrew-token-saver/skills/claude-code/hebrew-translator.tool.json ~/.claude/tools/
 
 # 3. Verify installation
-ls -la ~/.claude/tools/hebrew-translator*
+ls -la ~/.claude/tools/hebrew-translator-mcp.js
+```
 
-# 4. Restart Claude Code
+**Option 2: Use absolute path in MCP server**
+
+Edit `~/.claude/tools/hebrew-translator-mcp.js` and change the require path from:
+```javascript
+const { ... } = require('../../../lib/common');
+```
+to:
+```javascript
+const { ... } = require('/full/path/to/hebrew-token-saver/lib/common');
+```
+
+#### Configuration
+
+Add the MCP server configuration to `~/.claude/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "hebrew-translator": {
+      "command": "node",
+      "args": ["/Users/gilad/.claude/tools/hebrew-translator-mcp.js"]
+    }
+  }
+}
+```
+
+**Note:** The MCP server requires Node.js (v16+) and access to the `lib/common.js` module. The server uses relative paths, so the project structure must be preserved or you must modify the require statement to use an absolute path.
+
+#### Usage
+
+Once configured, you can use the tool in Claude Code:
+
+```
+/tool hebrew_translator --prompt "שלום עולם"
+/tool hebrew_translator --prompt "שלום עולם" --reply_in_english true
+/tool hebrew_translator --prompt "שלום עולם" --force_rtl true
 ```
 
 #### Installation on Windows
 
-**Using PowerShell:**
+**Option 1: Copy to Claude Tools (requires project structure)**
 
 ```powershell
 # 1. Create tools directory if it doesn't exist
 New-Item -ItemType Directory -Force -Path "$HOME\.claude\tools"
 
-# 2. Copy the tool files
+# 2. Copy the MCP server file
 Copy-Item "hebrew-token-saver\skills\claude-code\hebrew-translator-mcp.js" -Destination "$HOME\.claude\tools\"
-Copy-Item "hebrew-token-saver\skills\claude-code\hebrew-translator.tool.json" -Destination "$HOME\.claude\tools\"
 
 # 3. Verify installation
-Get-ChildItem "$HOME\.claude\tools\hebrew-translator*"
-
-# 4. Restart Claude Code
+Get-ChildItem "$HOME\.claude\tools\hebrew-translator-mcp.js"
 ```
 
-**Using Command Prompt:**
+**Option 2: Use absolute path in MCP server**
 
-```cmd
-REM 1. Create tools directory if it doesn't exist
-mkdir %USERPROFILE%\.claude\tools
-
-REM 2. Copy the tool files
-copy hebrew-token-saver\skills\claude-code\hebrew-translator-mcp.js %USERPROFILE%\.claude\tools\
-copy hebrew-token-saver\skills\claude-code\hebrew-translator.tool.json %USERPROFILE%\.claude\tools\
-
-REM 3. Verify installation
-dir %USERPROFILE%\.claude\tools\hebrew-translator*
-
-REM 4. Restart Claude Code
+Edit `$HOME\.claude\tools\hebrew-translator-mcp.js` and change the require path from:
+```javascript
+const { ... } = require('../../../lib/common');
 ```
+to:
+```javascript
+const { ... } = require('C:\\full\\path\\to\\hebrew-token-saver\\lib\\common');
+```
+
+#### Configuration
+
+Add the MCP server configuration to `%USERPROFILE%\.claude\settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "hebrew-translator": {
+      "command": "node",
+      "args": ["C:\\Users\\%USERNAME%\\.claude\\tools\\hebrew-translator-mcp.js"]
+    }
+  }
+}
+```
+
+**Note:** The MCP server requires Node.js (v16+) and access to the `lib/common.js` module. The server uses relative paths, so the project structure must be preserved or you must modify the require statement to use an absolute path.
 
 #### Usage
 
-**Using the Tool Directly:**
+Once configured, use the tool in Claude Code:
 
-```bash
-# Basic translation
+```
 /tool hebrew_translator --prompt "שלום עולם"
-
-# Request English response
-/tool hebrew_translator --prompt "שלום עולם" --reply-in-english
-
-# Request RTL formatting
-/tool hebrew_translator --prompt "שלום עולם" --force-rtl
+/tool hebrew_translator --prompt "שלום עולם" --reply_in_english true
+/tool hebrew_translator --prompt "שלום עולם" --force_rtl true
 ```
 
 **Example Output:**
@@ -541,6 +584,20 @@ The `--rtl` option uses these Unicode characters:
 
 ## Troubleshooting
 
+### Claude Code MCP Server Issues
+
+**Error: "Unknown command: /tool"**
+
+This means the MCP server is not configured. Add the `mcpServers` configuration to `~/.claude/settings.json` (macOS) or `%USERPROFILE%\.claude\settings.json` (Windows).
+
+**Error: "Cannot find module './common'"**
+
+The MCP server cannot find the `common.js` module. Ensure the `lib/common.js` file is accessible from the project root. The server uses `require('../../../lib/common')` to import the module.
+
+**Error: "API quota exceeded"**
+
+The MyMemory API has a daily limit of 1000 words. Wait for the quota to reset (24 hours) or use the local translation model if available.
+
 ### API Errors
 
 ```bash
@@ -639,92 +696,104 @@ Fibonacci numbers recursively. Can you help me?"
 
 ## התקנה ושימוש לפי פלטפורמה
 
-### 🟨 Claude Code
+### 🟨 Claude Code (שרת MCP)
+
+**חשוב:** Claude Code לא תומך בפקודה `/tool` באופן nativ. הקבצים ב-`skills/claude-code/` הם קבצי שרת MCP שחייבים להיות מוגדרים בהגדרות Claude.
 
 #### התקנה ב-macOS
+
+**אפשרות 1: העתקה לספריית כלים (דורש מבנה הפרויקט)**
 
 ```bash
 # 1. יצירת ספריית כלים אם היא לא קיימת
 mkdir -p ~/.claude/tools
 
-# 2. העתקת קבצי הכלי
+# 2. העתקת קובץ שרת ה-MCP
 cp hebrew-token-saver/skills/claude-code/hebrew-translator-mcp.js ~/.claude/tools/
-cp hebrew-token-saver/skills/claude-code/hebrew-translator.tool.json ~/.claude/tools/
 
 # 3. אימות ההתקנה
-ls -la ~/.claude/tools/hebrew-translator*
-
-# 4. הפעלה מחדש של Claude Code
+ls -la ~/.claude/tools/hebrew-translator-mcp.js
 ```
+
+**אפשרות 2: שימוש בנתיב מוחלט בקובץ ה-MCP**
+
+ערוך את `~/.claude/tools/hebrew-translator-mcp.js` ושנה את הנתיב מ:
+```javascript
+const { ... } = require('../../../lib/common');
+```
+לאחר:
+```javascript
+const { ... } = require('/full/path/to/hebrew-token-saver/lib/common');
+```
+
+#### תצורה
+
+הוסף את תצורת שרת ה-MCP לקובץ `~/.claude/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "hebrew-translator": {
+      "command": "node",
+      "args": ["/Users/gilad/.claude/tools/hebrew-translator-mcp.js"]
+    }
+  }
+}
+```
+
+**הערה:** שרת ה-MCP דורש Node.js (v16+) והמודול `common.js` מפרויקט זה. השרת משתמש בנתיבים יחסית, לכן מבנה הפרויקט חייב להיות שמור או עליך לשנות את ה-statement require לנתיב מוחלט.
 
 #### התקנה ב-Windows
 
-**באמצעות PowerShell:**
+**אפשרות 1: העתקה לספריית כלים (דורש מבנה הפרויקט)**
 
 ```powershell
 # 1. יצירת ספריית כלים אם היא לא קיימת
 New-Item -ItemType Directory -Force -Path "$HOME\.claude\tools"
 
-# 2. העתקת קבצי הכלי
+# 2. העתקת קובץ שרת ה-MCP
 Copy-Item "hebrew-token-saver\skills\claude-code\hebrew-translator-mcp.js" -Destination "$HOME\.claude\tools\"
-Copy-Item "hebrew-token-saver\skills\claude-code\hebrew-translator.tool.json" -Destination "$HOME\.claude\tools\"
 
 # 3. אימות ההתקנה
-Get-ChildItem "$HOME\.claude\tools\hebrew-translator*"
-
-# 4. הפעלה מחדש של Claude Code
+Get-ChildItem "$HOME\.claude\tools\hebrew-translator-mcp.js"
 ```
 
-**באמצעות Command Prompt:**
+**אפשרות 2: שימוש בנתיב מוחלט בקובץ ה-MCP**
 
-```cmd
-REM 1. יצירת ספריית כלים אם היא לא קיימת
-mkdir %USERPROFILE%\.claude\tools
-
-REM 2. העתקת קבצי הכלי
-copy hebrew-token-saver\skills\claude-code\hebrew-translator-mcp.js %USERPROFILE%\.claude\tools\
-copy hebrew-token-saver\skills\claude-code\hebrew-translator.tool.json %USERPROFILE%\.claude\tools\
-
-REM 3. אימות ההתקנה
-dir %USERPROFILE%\.claude\tools\hebrew-translator*
-
-REM 4. הפעלה מחדש של Claude Code
+ערוך את `$HOME\.claude\tools\hebrew-translator-mcp.js` ושנה את הנתיב מ:
+```javascript
+const { ... } = require('../../../lib/common');
+```
+לאחר:
+```javascript
+const { ... } = require('C:\\full\\path\\to\\hebrew-token-saver\\lib\\common');
 ```
 
-#### שימוש
+#### תצורה
 
-**שימוש בכלי ישירות:**
-
-```bash
-# תרגום בסיסי
-/tool hebrew_translator --prompt "שלום עולם"
-
-# בקשת תשובה באנגלית
-/tool hebrew_translator --prompt "שלום עולם" --reply-in-english
-
-# בקשת פורמט RTL
-/tool hebrew_translator --prompt "שלום עולם" --force-rtl
-```
-
-**דוגמת פלט:**
+הוסף את תצורת שרת ה-MCP לקובץ `%USERPROFILE%\.claude\settings.json`:
 
 ```json
 {
-  "success": true,
-  "is_hebrew": true,
-  "original": "שלום עולם",
-  "translated": "Hello world",
-  "final_prompt": "Hello world . Important! Reply in Hebrew",
-  "response_language": "Hebrew",
-  "token_savings_estimate": "Up to 40% on input tokens"
+  "mcpServers": {
+    "hebrew-translator": {
+      "command": "node",
+      "args": ["C:\\Users\\%USERNAME%\\.claude\\tools\\hebrew-translator-mcp.js"]
+    }
+  }
 }
 ```
 
-**אז שלח את `final_prompt` ל-LLM:**
+**הערה:** שרת ה-MCP דורש Node.js (v16+) והמודול `common.js` מפרויקט זה. השרת משתמש בנתיבים יחסית, לכן מבנה הפרויקט חייב להיות שמור או עליך לשנות את ה-statement require לנתיב מוחלט.
 
-```bash
-# העתק את final_prompt ושתמש בו בקריאה ל-LLM שלך
-"Hello world . Important! Reply in Hebrew"
+#### שימוש
+
+לאחר התצורה, השתמש בכלי ב-Claude Code:
+
+```
+/tool hebrew_translator --prompt "שלום עולם"
+/tool hebrew_translator --prompt "שלום עולם" --reply_in_english true
+/tool hebrew_translator --prompt "שלום עולם" --force_rtl true
 ```
 
 ---
