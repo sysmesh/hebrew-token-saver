@@ -8,8 +8,8 @@
     "hebrew-translate-hybrid": "./hebrew-translator-hybrid.js"
   },
   "scripts": {
-    "test": "node hebrew-translator.js 'שלום עולם'",
-    "test-hybrid": "node hebrew-translator-hybrid.js 'שלום עולם'",
+    "test": "node test.js",
+    "test-rtl": "node test-rtl.js",
     "demo": "node hebrew-translator.js 'איך מכינים חלבה?'",
     "demo-hybrid": "node hebrew-translator-hybrid.js 'איך מכינים חלבה?'"
   },
@@ -26,7 +26,8 @@
   "author": "Hebrew Token Saver",
   "license": "MIT",
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "https://github.com/sysmesh/hebrew-token-saver.git"
   },
   "engines": {
     "node": ">=14.0.0"

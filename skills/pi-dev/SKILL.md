@@ -2,12 +2,13 @@
 
 ## Metadata
 
-```
-name: hebrew-auto-translate
-version: 1.0.0
-platform: pi.dev
-type: prompt-interceptor
-author: Hebrew Token Saver
+```json
+{
+  "name": "hebrew-auto-translate",
+  "version": "1.0.0",
+  "platform": "pi.dev",
+  "type": "prompt-interceptor"
+}
 ```
 
 ## Description
@@ -16,13 +17,13 @@ Automatically detects Hebrew prompts, translates them to English via the free My
 
 ## Features
 
-- ✅ Auto-detects Hebrew text (≥20% Hebrew characters)
-- ✅ Translates to English before sending to LLM
-- ✅ Requests Hebrew response from LLM
-- ✅ Saves up to 50% on input tokens
-- ✅ Hybrid mode: API + local model fallback
-- ✅ `--english` flag for English responses
-- ✅ `--rtl` flag for RTL formatting
+- Auto-detects Hebrew text (≥20% Hebrew characters)
+- Translates to English before sending to LLM
+- Requests Hebrew response from LLM
+- Saves up to 50% on input tokens
+- Hybrid mode: API + local model fallback
+- `--english` flag for English responses
+- `--rtl` flag for RTL formatting
 
 ## Installation
 
@@ -41,9 +42,9 @@ Simply type in Hebrew - the skill automatically handles everything:
 
 ```
 User: איך מכינים חלבה?
-↓ [Skill: Detect Hebrew → Translate → Append response request]
+-> [Skill: Detect Hebrew -> Translate -> Append response request]
 LLM receives: "How to make halva? . Important! Reply in Hebrew"
-↓
+->
 LLM responds in Hebrew
 ```
 
@@ -94,9 +95,7 @@ Add to `~/.pi/config.json`:
 ```
 pi-dev/
 ├── SKILL.md          # This file
-├── interceptor.js    # Prompt interception logic
-├── translator.js     # Translation logic
-└── package.json      # Dependencies
+└── interceptor.js    # Prompt interception logic
 ```
 
 ## Implementation Details
@@ -118,7 +117,7 @@ export function interceptPrompt(prompt) {
 
 ```javascript
 export function isHebrew(text) {
-  const hebrewChars = text.match(/[\u0590-\u05FF]/g);
+  const hebrewChars = text.match(/[֐-׿]/g);
   return hebrewChars && (hebrewChars.length / text.length) >= 0.2;
 }
 ```

@@ -7,5 +7,6 @@
   "platform": "pi.dev",
   "keywords": ["hebrew", "translation", "pi.dev", "skill", "prompt-interceptor"],
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {}
 }
