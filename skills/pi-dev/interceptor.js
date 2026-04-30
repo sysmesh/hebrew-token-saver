@@ -3,6 +3,8 @@
  *
  * This file is loaded by pi.dev and intercepts user prompts
  * to automatically translate Hebrew to English before sending to LLM.
+ *
+ * @module skills/pi-dev/interceptor
  */
 
 const { isHebrew, translateHebrew, buildFinalPrompt } = require('../../../lib/common');
@@ -10,6 +12,12 @@ const { isHebrew, translateHebrew, buildFinalPrompt } = require('../../../lib/co
 /**
  * Main prompt interceptor
  * Called by pi.dev before sending prompts to LLM
+ * @param {string} prompt - The user's prompt text
+ * @param {object} [options={}] - Interception options
+ * @param {boolean} [options.replyInEnglish=false] - Request English response
+ * @param {boolean} [options.forceRTL=false] - Apply RTL formatting
+ * @param {boolean} [options.forceTranslate=false] - Force translation even if not Hebrew
+ * @returns {Promise<object>} Interception result with modified prompt
  */
 async function interceptPrompt(prompt, options = {}) {
   const {
@@ -48,6 +56,12 @@ async function interceptPrompt(prompt, options = {}) {
 
 /**
  * Pi.dev skill definition
+ * @type {object}
+ * @property {string} name - Skill name
+ * @property {string} version - Skill version
+ * @property {string} type - Skill type (prompt-interceptor)
+ * @property {function} intercept - Prompt interception function
+ * @property {function} isHebrew - Hebrew detection function
  */
 const skill = {
   name: 'hebrew-auto-translate',

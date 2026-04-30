@@ -11,69 +11,23 @@
  * Usage:
  * - Automatic: Just type in Hebrew
  * - Manual: /hebrew-translate "שלום עולם" [--english] [--rtl]
+ *
+ * @module skills/opencode/skill
  */
 
-const { isHebrew, translateHebrew, buildFinalPrompt } = require('../../../lib/common');
-
-/**
- * Process a Hebrew prompt
- */
-async function processHebrewPrompt(prompt, options = {}) {
-  const {
-    replyInEnglish = false,
-    forceRTL = false,
-    forceTranslate = false,
-    threshold = 0.2
-  } = options;
-
-  // Validate options
-  if (forceRTL && replyInEnglish) {
-    return {
-      success: false,
-      error: 'Options --rtl and --english are incompatible'
-    };
-  }
-
-  // Check if Hebrew
-  const detectedHebrew = isHebrew(prompt, threshold) || forceTranslate;
-
-  if (!detectedHebrew) {
-    return {
-      success: true,
-      isHebrew: false,
-      original: prompt,
-      translated: null,
-      finalPrompt: prompt,
-      message: 'Text is not Hebrew, returning as-is'
-    };
-  }
-
-  // Translate
-  let translated;
-  try {
-    const result = await translateHebrew(prompt);
-    translated = result.translated;
-  } catch (error) {
-    // Fall back to original text if translation fails
-    translated = prompt;
-  }
-
-  const { finalPrompt, rtlFormatted } = buildFinalPrompt(translated, options);
-
-  return {
-    success: true,
-    isHebrew: true,
-    original: prompt,
-    translated,
-    finalPrompt,
-    responseLanguage: replyInEnglish ? 'English' : 'Hebrew',
-    tokenSavings: 'Up to 40% on input tokens'
-  };
-}
+const { processHebrewPrompt } = require('../../../lib/common');
 
 /**
  * OpenCode Skill: onPrompt hook
  * Called automatically before every prompt is sent to the LLM
+ * @param {string} prompt - The user's prompt text
+ * @param {object} context - Skill context with configuration
+ * @param {object} [context.config] - Skill configuration
+ * @param {boolean} [context.config.autoTranslate=true] - Enable automatic translation
+ * @param {string} [context.config.responseLanguage='hebrew'] - Response language (hebrew|english)
+ * @param {boolean} [context.config.useRtlFormatting=false] - Enable RTL formatting
+ * @param {number} [context.config.hebrewThreshold=0.2] - Hebrew detection threshold
+ * @returns {Promise<object>} Modified prompt with interception metadata
  */
 async function onPrompt(prompt, context) {
   // Check if auto-translate is enabled
@@ -98,8 +52,14 @@ async function onPrompt(prompt, context) {
 /**
  * OpenCode Command: /hebrew-translate
  * Manual translation command
+ * @param {object} args - Command arguments
+ * @param {string} args.prompt - The prompt to translate
+ * @param {boolean} [args['--english']=false] - Request English response
+ * @param {boolean} [args['--rtl']=false] - Apply RTL formatting
+ * @param {boolean} [args['--force']=false] - Force translation
+ * @returns {Promise<object>} Translation result with output string
  */
-async function hebrewTranslate(args, context) {
+async function hebrewTranslate(args) {
   const prompt = args.prompt;
 
   if (!prompt) {
@@ -115,8 +75,12 @@ async function hebrewTranslate(args, context) {
     forceTranslate: args['--force'] || false
   });
 
-  if (!result.success) {
-    return result;
+  // Check for errors (error property indicates failure)
+  if (result.error) {
+    return {
+      success: false,
+      error: result.error
+    };
   }
 
   // Display result
@@ -124,9 +88,9 @@ async function hebrewTranslate(args, context) {
   output += `Original: ${result.original}\n`;
 
   if (result.isHebrew) {
-    output += `Translated: ${result.translated}\n`;
+    output += `Translated: ${result.translated || 'Translation failed, using original'}\n`;
     output += `Response Language: ${result.responseLanguage}\n`;
-    output += `Token Savings: ${result.tokenSavings}\n`;
+    output += `Token Savings: Up to 40% on input tokens\n`;
   } else {
     output += `Status: Not detected as Hebrew\n`;
   }
@@ -145,7 +109,6 @@ async function hebrewTranslate(args, context) {
 module.exports = {
   onPrompt,
   hebrewTranslate,
-  isHebrew,
   processHebrewPrompt
 };
 

@@ -8,12 +8,31 @@
  *
  * Uses the free MyMemory Translation API (no API key required)
  * https://www.mymemory.net/api/
+ *
+ * @module hebrew-translator
+ * @example
+ * // CLI usage:
+ * // node hebrew-translator.js "שלום עולם"
+ * // node hebrew-translator.js "שלום עולם" --english
+ * // node hebrew-translator.js "שלום עולם" --rtl
+ *
+ * @example
+ * // Programmatic usage:
+ * const { processHebrewPrompt } = require('./hebrew-translator.js');
+ * const result = await processHebrewPrompt("שלום עולם", {
+ *   replyInEnglish: false,
+ *   forceRTL: false
+ * });
+ * console.log(result.finalPrompt);
  */
 
 const { isHebrew, translateHebrew, processHebrewPrompt } = require('./lib/common');
 
 /**
  * Main function - CLI interface
+ * Displays usage information or processes a Hebrew prompt
+ * @param {string[]} args - Command line arguments
+ * @returns {Promise<void>}
  */
 async function main() {
   const args = process.argv.slice(2);

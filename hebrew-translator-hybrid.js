@@ -8,6 +8,22 @@
  *
  * Local model: Helsinki-NLP/opus-mt-he-en (~150MB)
  * Framework: @xenova/transformers (Transformers.js)
+ *
+ * @module hebrew-translator-hybrid
+ * @example
+ * // CLI usage:
+ * // node hebrew-translator-hybrid.js "שלום עולם"
+ * // node hebrew-translator-hybrid.js "שלום עולם" --english
+ * // node hebrew-translator-hybrid.js "שלום עולם" --local-only
+ *
+ * @example
+ * // Programmatic usage:
+ * const { processHebrewPromptHybrid } = require('./hebrew-translator-hybrid.js');
+ * const result = await processHebrewPromptHybrid("שלום עולם", {
+ *   replyInEnglish: false,
+ *   skipAPI: false,
+ *   skipLocal: false
+ * });
  */
 
 const { isHebrew, translateHebrew, buildFinalPrompt } = require('./lib/common');
@@ -18,25 +34,35 @@ const MAX_CHUNK_SIZE = 800; // Leave room for encoding overhead
 // Global translator instance (cached after first load)
 let localTranslator = null;
 let translatorInitializing = false;
+let lastLoadAttempt = 0;
+const LOAD_RETRY_DELAY = 60000; // 1 minute between retry attempts
 
 /**
  * Initialize local translator (Transformers.js)
+ * Loads the Helsinki-NLP/opus-mt-he-en model on first call
+ * @returns {Promise<object>} The translation pipeline instance
+ * @throws {Error} If Transformers.js is not installed or model fails to load
  */
 async function initializeLocalTranslator() {
   if (localTranslator) return localTranslator;
 
-  if (translatorInitializing) {
-    // Wait for existing initialization
-    return new Promise((resolve) => {
+  const now = Date.now();
+  if (translatorInitializing && (now - lastLoadAttempt < LOAD_RETRY_DELAY)) {
+    // Wait for existing initialization with backoff
+    return new Promise((resolve, reject) => {
       const checkInterval = setInterval(() => {
         if (localTranslator) {
           clearInterval(checkInterval);
           resolve(localTranslator);
+        } else if (now - lastLoadAttempt >= LOAD_RETRY_DELAY) {
+          clearInterval(checkInterval);
+          reject(new Error('Translator loading timeout, please wait and try again'));
         }
       }, 100);
     });
   }
 
+  lastLoadAttempt = now;
   translatorInitializing = true;
 
   try {
@@ -49,21 +75,28 @@ async function initializeLocalTranslator() {
     localTranslator = await pipeline('translation', 'Xenova/opus-mt-he-en');
 
     console.log('Local model loaded successfully!');
+    translatorInitializing = false;
     return localTranslator;
   } catch (error) {
+    // Only reset flag for installation-related errors
+    // Don't reset for other errors (corrupted model, etc.)
     if (error.code === 'MODULE_NOT_FOUND') {
+      translatorInitializing = false;
       throw new Error(
         'Transformers.js not installed. Run: npm install @xenova/transformers'
       );
     }
+    // For other errors, keep the flag set to prevent rapid retries
     throw error;
-  } finally {
-    translatorInitializing = false;
   }
 }
 
 /**
  * Split text into chunks for translation
+ * Attempts to split on sentence boundaries first, falls back to character-based
+ * @param {string} text - The text to chunk
+ * @param {number} [chunkSize=MAX_CHUNK_SIZE] - Maximum size per chunk
+ * @returns {string[]} Array of text chunks
  */
 function chunkText(text, chunkSize = MAX_CHUNK_SIZE) {
   const chunks = [];
@@ -102,6 +135,8 @@ function chunkText(text, chunkSize = MAX_CHUNK_SIZE) {
 
 /**
  * Translate using local model
+ * @param {string} text - The text to translate
+ * @returns {Promise<string>} Translated text
  */
 async function translateLocal(text) {
   const translator = await initializeLocalTranslator();
@@ -127,6 +162,11 @@ async function translateLocal(text) {
 
 /**
  * Hybrid translation: API first, then local fallback
+ * @param {string} text - The text to translate
+ * @param {object} [options={}] - Translation options
+ * @param {boolean} [options.skipAPI=false] - Skip MyMemory API
+ * @param {boolean} [options.skipLocal=false] - Skip local model
+ * @returns {Promise<object>} Translation result with method and translated text
  */
 async function translateHybrid(text, options = {}) {
   const { skipAPI = false, skipLocal = false } = options;
@@ -141,8 +181,9 @@ async function translateHybrid(text, options = {}) {
         method: 'api'
       };
     } catch (error) {
+      const isQuotaError = error.message.includes('quota') || error.message.includes('limit');
       console.log(`API failed: ${error.message}`);
-      console.log('Falling back to local model...');
+      console.log(`Falling back to local model...${isQuotaError ? ' (quota exceeded)' : ''}`);
     }
   }
 
@@ -172,11 +213,20 @@ async function translateHybrid(text, options = {}) {
 
 /**
  * Process Hebrew prompt with hybrid translation
+ * @param {string} prompt - The original Hebrew prompt
+ * @param {object} [options={}] - Processing options
+ * @param {boolean} [options.replyInEnglish=false] - Request English response
+ * @param {boolean} [options.forceRTL=false] - Apply RTL formatting
+ * @param {boolean} [options.forceTranslate=false] - Force translation
+ * @param {boolean} [options.skipAPI=false] - Skip MyMemory API
+ * @param {boolean} [options.skipLocal=false] - Skip local model
+ * @returns {Promise<object>} Processing result with translation details
  */
 async function processHebrewPromptHybrid(prompt, options = {}) {
   const { replyInEnglish = false, forceRTL = false, forceTranslate = false, skipAPI = false, skipLocal = false } = options;
 
   const result = {
+    success: true,
     original: prompt,
     isHebrew: false,
     translated: null,
@@ -214,7 +264,8 @@ async function processHebrewPromptHybrid(prompt, options = {}) {
 }
 
 /**
- * CLI interface
+ * CLI interface - displays usage or processes a prompt
+ * @returns {Promise<void>}
  */
 async function main() {
   const args = process.argv.slice(2);

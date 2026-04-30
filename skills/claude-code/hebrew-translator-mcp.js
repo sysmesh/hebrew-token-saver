@@ -11,6 +11,8 @@
  * Usage in Claude Code:
  * /tool hebrew_translator --prompt "שלום עולם"
  * /tool hebrew_translator --prompt "שלום עולם" --reply-in-english
+ *
+ * @module skills/claude-code/hebrew-translator-mcp
  */
 
 const { isHebrew, translateHebrew, buildFinalPrompt } = require('../../../lib/common');
@@ -18,6 +20,12 @@ const { isHebrew, translateHebrew, buildFinalPrompt } = require('../../../lib/co
 /**
  * Main tool function
  * Called by Claude Code when user invokes /tool hebrew_translator
+ * @param {object} args - Tool arguments
+ * @param {string} args.prompt - The Hebrew prompt to translate
+ * @param {boolean} [args.reply_in_english=false] - Request English response
+ * @param {boolean} [args.force_rtl=false] - Apply RTL formatting
+ * @param {boolean} [args.force_translate=false] - Force translation even if not Hebrew
+ * @returns {Promise<object>} Translation result with final prompt for LLM
  */
 async function hebrew_translator(args) {
   const {
@@ -51,21 +59,25 @@ async function hebrew_translator(args) {
 
   // Translate
   let translated;
+  let translationError;
   try {
     const result = await translateHebrew(prompt);
     translated = result.translated;
   } catch (error) {
+    // Log error for debugging
+    console.error('Translation failed:', error.message);
+    translationError = error.message;
     // Fall back to original text if translation fails
     translated = prompt;
   }
 
-  const { finalPrompt, rtlFormatted } = buildFinalPrompt(translated, {
+  const { finalPrompt } = buildFinalPrompt(translated, {
     replyInEnglish: reply_in_english,
     forceRTL: force_rtl
   });
 
-  return {
-    success: true,
+  const response = {
+    success: !translationError,
     is_hebrew: true,
     original: prompt,
     translated,
@@ -74,6 +86,13 @@ async function hebrew_translator(args) {
     token_savings_estimate: 'Up to 40% on input tokens',
     usage_note: 'Send final_prompt to the LLM to get a response in the requested language'
   };
+
+  // Include error info if translation failed
+  if (translationError) {
+    response.translation_warning = `Translation failed: ${translationError}. Using original text.`;
+  }
+
+  return response;
 }
 
 // Export for Claude Code
