@@ -9,7 +9,12 @@
       "Read(//private/tmp/**)",
       "Read(//tmp/**)",
       "Bash(npm run *)",
-      "Bash(awk '{print $5}')"
+      "Bash(awk '{print $5}')",
+      "Bash(grep -n \"### 🟨 Claude Code\\\\|### 🟩 OpenCode\\\\|^---$\" /Users/gilad/Projects/hebrew-token-saver/README.md)",
+      "Bash(grep -n \"^### 🟨\\\\|^---$\" /Users/gilad/Projects/hebrew-token-saver/README.md)",
+      "Bash(awk *)",
+      "Bash(grep -n \"^### 🟨 Claude Code\\\\|^---$\" /Users/gilad/Projects/hebrew-token-saver/README.md)",
+      "Bash(grep -n \"### 🟨 Claude Code\\\\|^---$\" /Users/gilad/Projects/hebrew-token-saver/README.md)"
     ]
   }
 }
