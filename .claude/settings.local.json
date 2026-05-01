@@ -14,7 +14,10 @@
       "Bash(grep -n \"^### 🟨\\\\|^---$\" /Users/gilad/Projects/hebrew-token-saver/README.md)",
       "Bash(awk *)",
       "Bash(grep -n \"^### 🟨 Claude Code\\\\|^---$\" /Users/gilad/Projects/hebrew-token-saver/README.md)",
-      "Bash(grep -n \"### 🟨 Claude Code\\\\|^---$\" /Users/gilad/Projects/hebrew-token-saver/README.md)"
+      "Bash(grep -n \"### 🟨 Claude Code\\\\|^---$\" /Users/gilad/Projects/hebrew-token-saver/README.md)",
+      "Read(//Users/gilad/.claude/**)",
+      "Read(//Users/gilad/.opencode/**)",
+      "Bash(cp *)"
     ]
   }
 }

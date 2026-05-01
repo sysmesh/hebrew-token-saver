@@ -185,16 +185,13 @@ node hebrew-translator-hybrid.js --local-only "שלום עולם"
 #### Installation on macOS
 
 ```bash
-# 1. Create skills directory if it doesn't exist
-mkdir -p ~/.opencode/skills
+# Quick install (recommended)
+npm run install-opencode
 
-# 2. Copy the skill directory
-cp -r hebrew-token-saver/skills/opencode ~/.opencode/skills/hebrew-auto-translate
-
-# 3. Verify installation
+# Verify installation
 ls -la ~/.opencode/skills/hebrew-auto-translate/
 
-# 3. Configure in settings.json (optional)
+# Configure in settings.json (optional)
 cat >> ~/.opencode/settings.json << 'EOF'
 {
   "skills": {
@@ -208,7 +205,7 @@ cat >> ~/.opencode/settings.json << 'EOF'
 }
 EOF
 
-# 4. Restart OpenCode
+# Restart OpenCode
 ```
 
 #### Installation on Windows
@@ -216,16 +213,13 @@ EOF
 **Using PowerShell:**
 
 ```powershell
-# 1. Create skills directory if it doesn't exist
-New-Item -ItemType Directory -Force -Path "$HOME\.opencode\skills"
+# Quick install (recommended)
+npm run install-opencode
 
-# 2. Copy the skill directory
-Copy-Item -Recurse "hebrew-token-saver\skills\opencode" -Destination "$HOME\.opencode\skills\hebrew-auto-translate"
-
-# 3. Verify installation
+# Verify installation
 Get-ChildItem "$HOME\.opencode\skills\hebrew-auto-translate"
 
-# 3. Configure in settings.json (optional)
+# Configure in settings.json (optional)
 $settings = @{
     skills = @{
         "hebrew-auto-translate" = @{
@@ -238,22 +232,19 @@ $settings = @{
 }
 $settings | ConvertTo-Json | Out-File "$HOME\.opencode\settings.json" -Append
 
-# 4. Restart OpenCode
+# Restart OpenCode
 ```
 
 **Using Command Prompt:**
 
 ```cmd
-REM 1. Create skills directory if it doesn't exist
-mkdir %USERPROFILE%\.opencode\skills
+REM Quick install (recommended)
+npm run install-opencode
 
-REM 2. Copy the skill directory
-xcopy /E /I /Y hebrew-token-saver\skills\opencode %USERPROFILE%\.opencode\skills\hebrew-auto-translate\
-
-REM 3. Verify installation
+REM Verify installation
 dir %USERPROFILE%\.opencode\skills\hebrew-auto-translate\
 
-REM 3. Configure in settings.json (optional)
+REM Configure in settings.json (optional)
 REM Manually add this to %USERPROFILE%\.opencode\settings.json:
 REM {
 REM   "skills": {
@@ -266,7 +257,7 @@ REM     }
 REM   }
 REM }
 
-REM 4. Restart OpenCode
+REM Restart OpenCode
 ```
 
 #### Usage
@@ -802,17 +793,22 @@ node hebrew-translator-hybrid.js --local-only "שלום עולם"
 
 #### התקנה ב-macOS
 
+**התקנה מהירה (מומלץ):**
+
 ```bash
-# 1. יצירת ספריית סקילים אם היא לא קיימת
+cd hebrew-token-saver
+npm run install-opencode
+# הפעל מחדש את OpenCode
+```
+
+**התקנה ידנית:**
+
+```bash
 mkdir -p ~/.opencode/skills
-
-# 2. העתקת ספריית הסקיל
 cp -r hebrew-token-saver/skills/opencode ~/.opencode/skills/hebrew-auto-translate
-
-# 3. אימות ההתקנה
 ls -la ~/.opencode/skills/hebrew-auto-translate/
 
-# 3. תצורה בקובץ settings.json (אופציונלי)
+# תצורה בקובץ settings.json (אופציונלי)
 cat >> ~/.opencode/settings.json << 'EOF'
 {
   "skills": {
@@ -826,24 +822,27 @@ cat >> ~/.opencode/settings.json << 'EOF'
 }
 EOF
 
-# 4. הפעלה מחדש של OpenCode
+# הפעל מחדש את OpenCode
 ```
 
 #### התקנה ב-Windows
 
-**באמצעות PowerShell:**
+**התקנה מהירה (מומלץ):**
 
 ```powershell
-# 1. יצירת ספריית סקילים אם היא לא קיימת
+cd hebrew-token-saver
+npm run install-opencode
+# הפעל מחדש את OpenCode
+```
+
+**התקנה ידנית דרך PowerShell:**
+
+```powershell
 New-Item -ItemType Directory -Force -Path "$HOME\.opencode\skills"
-
-# 2. העתקת ספריית הסקיל
 Copy-Item -Recurse "hebrew-token-saver\skills\opencode" -Destination "$HOME\.opencode\skills\hebrew-auto-translate"
-
-# 3. אימות ההתקנה
 Get-ChildItem "$HOME\.opencode\skills\hebrew-auto-translate"
 
-# 3. תצורה בקובץ settings.json (אופציונלי)
+# תצורה בקובץ settings.json (אופציונלי)
 $settings = @{
     skills = @{
         "hebrew-auto-translate" = @{
@@ -856,22 +855,21 @@ $settings = @{
 }
 $settings | ConvertTo-Json | Out-File "$HOME\.opencode\settings.json" -Append
 
-# 4. הפעלה מחדש של OpenCode
+# הפעל מחדש את OpenCode
 ```
 
-**באמצעות Command Prompt:**
+**התקנה ידנית דרך Command Prompt:**
 
 ```cmd
-REM 1. יצירת ספריית סקילים אם היא לא קיימת
+cd hebrew-token-saver
+npm run install-opencode
+
+REM או ידנית:
 mkdir %USERPROFILE%\.opencode\skills
-
-REM 2. העתקת ספריית הסקיל
 xcopy /E /I /Y hebrew-token-saver\skills\opencode %USERPROFILE%\.opencode\skills\hebrew-auto-translate\
-
-REM 3. אימות ההתקנה
 dir %USERPROFILE%\.opencode\skills\hebrew-auto-translate\
 
-REM 3. תצורה בקובץ settings.json (אופציונלי)
+REM תצורה בקובץ settings.json (אופציונלי)
 REM הוסף ידנית ל-%USERPROFILE%\.opencode\settings.json:
 REM {
 REM   "skills": {
@@ -884,7 +882,7 @@ REM     }
 REM   }
 REM }
 
-REM 4. הפעלה מחדש של OpenCode
+REM הפעל מחדש את OpenCode
 ```
 
 #### שימוש
