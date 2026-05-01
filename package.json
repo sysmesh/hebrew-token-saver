@@ -5,10 +5,12 @@
   "main": "hebrew-translator.js",
   "bin": {
     "hebrew-translate": "./hebrew-translator.js",
-    "hebrew-translate-hybrid": "./hebrew-translator-hybrid.js"
+    "hebrew-translate-hybrid": "./hebrew-translator-hybrid.js",
+    "hebrew-translator-mcp": "./dist/hebrew-translator-mcp.js"
   },
   "scripts": {
-    "bundle": "npx esbuild hebrew-translator-mcp.js --bundle --platform=node --target=node14 --outfile=dist/hebrew-translator-mcp.js --banner:js=\"#!/usr/bin/env node\"",
+    "bundle": "npx esbuild hebrew-translator-mcp-server.mjs --bundle --platform=node --target=node14 --external:@xenova/transformers --outfile=dist/hebrew-translator-mcp.js --banner:js=\"#!/usr/bin/env node\"",
+    "postinstall": "npm run bundle && node install-claude.js",
     "install-opencode": "node install-opencode.js",
     "install-claude": "node install-claude.js",
     "test": "node test.js",

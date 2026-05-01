@@ -72,111 +72,74 @@ A zero-dependency, ~11 KB bundled server that auto-translates Hebrew prompts to 
 
 #### Prerequisites
 
-- Node.js 14+
-- npm (bundled with Node)
+- Node.js 14+ (for `npx`)
 
-#### Installation on macOS
+#### Quick Install — `npx -y` (Recommended)
+
+Zero config, zero install — one line:
+
+```bash
+claude mcp add hebrew-translator -- npx -y hebrew-token-saver
+```
+
+That's it. Restart Claude Code — the `hebrew_translate` tool and `/hebrew-translate` slash command will be available.
+
+**How it works:**
+
+1. `claude mcp add` registers the server in `~/.claude/settings.json`
+2. `npx -y` fetches the package from npm on first use — no files left on disk, no config files generated
+3. The package's `bin` field points to the pre-bundled MCP server (`dist/hebrew-translator-mcp.js`), which is a single ~11 KB file with zero dependencies
+
+#### Manual Install — Source
+
+For those who prefer source-based installation:
 
 ```bash
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 cd hebrew-token-saver
 npm install            # install build dependencies (esbuild)
 npm run bundle         # create dist/hebrew-translator-mcp.js (zero deps, ~11 KB)
-npm run install-claude # copy to ~/.claude/tools/, install skill, and configure settings.json
+npx -y hebrew-token-saver claude mcp add hebrew-translator -- node dist/hebrew-translator-mcp.js
 ```
-
-Restart Claude Code — the `hebrew_translate` tool and `/hebrew-translate` slash command will be available.
-
-**What happens under the hood:**
-1. **`npm run bundle`** — esbuild bundles `hebrew-translator-mcp-server.js` into a single CommonJS file at `dist/hebrew-translator-mcp.js`. The output uses only Node built-ins, zero npm dependencies.
-2. **`npm run install-claude`** — runs `install-claude.js`, which:
-   - Copies the bundle to `~/.claude/tools/hebrew-translator-mcp.js`
-   - Copies the slash command skill to `~/.claude/skills/claude-code/hebrew-translate.md`
-   - Adds an MCP server entry to `~/.claude/settings.json`:
-
-```json
-{
-  "mcpServers": {
-    "hebrew-translator": {
-      "command": "node",
-      "args": ["~/.claude/tools/hebrew-translator-mcp.js"]
-    }
-  }
-}
-```
-
-#### Installation on Windows
-
-**Using PowerShell:**
-
-```powershell
-git clone https://github.com/sysmesh/hebrew-token-saver.git
-cd hebrew-token-saver
-npm install            # install build dependencies (esbuild)
-npm run bundle         # create dist/hebrew-translator-mcp.js (zero deps, ~11 KB)
-npm run install-claude # copy to $HOME\.claude\tools\ and configure settings.json
-```
-
-Restart Claude Code — the `hebrew_translate` tool will be available.
-
-**Using Command Prompt:**
-
-```cmd
-git clone https://github.com/sysmesh/hebrew-token-saver.git
-cd hebrew-token-saver
-npm install            :: install build dependencies (esbuild)
-npm run bundle         :: create dist/hebrew-translator-mcp.js (zero deps, ~11 KB)
-npm run install-claude :: copy to %USERPROFILE%\.claude\tools\ and configure settings.json
-```
-
-Restart Claude Code — the `hebrew_translate` tool will be available.
 
 #### Updating
 
-Re-run the bundle and install whenever you pull changes:
-
 ```bash
-git pull && npm run bundle && npm run install-claude
+git pull && npm run bundle
+# No re-install needed — npx always fetches the latest on first use per session
 ```
 
 #### Uninstall
 
-Remove the `hebrew-translator` entry from `~/.claude/settings.json`, then:
-
 ```bash
-rm ~/.claude/tools/hebrew-translator-mcp.js
+claude mcp remove hebrew-translator
 ```
 
 #### Verification
 
 ```bash
-# Test the bundle exists (~11 KB, no imports of node_modules)
-ls -la dist/hebrew-translator-mcp.js
+# Test translation
+npx -y hebrew-token-saver demo
 
 # Test Hebrew detection
 node test.js
-
-# Test translation
-node hebrew-translator.js "שלום עולם"
-# Expected output includes: "Hello world . Important! Reply in Hebrew"
 ```
 
 #### Troubleshooting
 
-**"Bundled server not found at: dist/hebrew-translator-mcp.js"**
-Run `npm run bundle` first. If esbuild is missing, ensure you ran `npm install`.
-
 **MCP Server Not Loading in Claude Code**
-1. Verify the file exists: `ls ~/.claude/tools/hebrew-translator-mcp.js`
-2. Check settings.json has the entry: `cat ~/.claude/settings.json | grep hebrew`
+
+1. Verify it's registered: `claude mcp list | grep hebrew`
+2. Test the bundle directly: `npx -y hebrew-token-saver demo`
 3. Restart Claude Code fully (quit and relaunch)
 
 **Translation API Quota Exceeded**
+
 The MyMemory API has a daily limit of 1000 words. Use the local model fallback:
 
 ```bash
 npm install @xenova/transformers
-node hebrew-translator-hybrid.js --local-only "שלום עולם"
+npx -y hebrew-token-saver demo-hybrid
 ```
 
 ---
@@ -682,103 +645,64 @@ Fibonacci numbers recursively. Can you help me?"
 
 #### דרישות מוקדמות
 
-- Node.js 14+
-- npm (מגיע עם Node)
+- Node.js 14+ (עבור `npx`)
 
-#### התקנה ב-macOS
+#### התקנה מהירה — `npx -y` (מומלץ)
+
+ללא הגדרות, ללא התקנה — שורה אחת:
+
+```bash
+claude mcp add hebrew-translator -- npx -y hebrew-token-saver
+```
+
+זהו. הפעל מחדש את Claude Code — הכלי `hebrew_translate` ופקודת ה-/hebrew-translate יהיו זמינים.
+
+**איך זה עובד:**
+
+1. `claude mcp add` רושם את השרת ב-`~/.claude/settings.json`
+2. `npx -y` משיג את החבילה מ-npx בשימוש הראשון — ללא קבצים על הדיסק, ללא קבצי הגדרה
+3. השדה `bin` בחבילה מצביע על שרת MCP מאוחד (`dist/hebrew-translator-mcp.js`), קובץ יחיד ~11 KB ללא תלויות
+
+#### התקנה ידנית — מקור
+
+למי שמעדיף התקנה מקודם:
 
 ```bash
 git clone https://github.com/sysmesh/hebrew-token-saver.git
 cd hebrew-token-saver
 npm install            # התקנת תלויות בנייה (esbuild)
 npm run bundle         # יצירת dist/hebrew-translator-mcp.js (ללא תלויות, ~11 KB)
-npm run install-claude # העתקה ל-~/.claude/tools/ והגדרת settings.json
+npx -y hebrew-token-saver claude mcp add hebrew-translator -- node dist/hebrew-translator-mcp.js
 ```
-
-הפעל מחדש את Claude Code — הכלי `hebrew_translate` ופקודת ה-/hebrew-translate יהיו זמינים.
-
-**מה קורה ברקע:**
-1. **`npm run bundle`** — esbuild מאחד את `hebrew-translator-mcp-server.js` לקובץ CommonJS יחיד ב-`dist/hebrew-translator-mcp.js`. הפלט משתמש רק במודולים פנימיים של Node, ללא תלויות npm.
-2. **`npm run install-claude`** — מריץ את `install-claude.js`, אשר:
-   - מעתיק את הקובץ ל-`~/.claude/tools/hebrew-translator-mcp.js`
-   - מעתיק את סקיל הפקודה ל-`~/.claude/skills/claude-code/hebrew-translate.md`
-   - מוסיף כניסת שרת MCP ל-`~/.claude/settings.json`:
-
-```json
-{
-  "mcpServers": {
-    "hebrew-translator": {
-      "command": "node",
-      "args": ["~/.claude/tools/hebrew-translator-mcp.js"]
-    }
-  }
-}
-```
-
-#### התקנה ב-Windows
-
-**באמצעות PowerShell:**
-
-```powershell
-git clone https://github.com/sysmesh/hebrew-token-saver.git
-cd hebrew-token-saver
-npm install            # התקנת תלויות בנייה (esbuild)
-npm run bundle         # יצירת dist/hebrew-translator-mcp.js (ללא תלויות, ~11 KB)
-npm run install-claude # העתקה ל-$HOME\.claude\tools\ והגדרת settings.json
-```
-
-הפעל מחדש את Claude Code — הכלי `hebrew_translate` ופקודת ה-/hebrew-translate יהיו זמינים.
-
-**באמצעות Command Prompt:**
-
-```cmd
-git clone https://github.com/sysmesh/hebrew-token-saver.git
-cd hebrew-token-saver
-npm install            :: התקנת תלויות בנייה (esbuild)
-npm run bundle         :: יצירת dist/hebrew-translator-mcp.js (ללא תלויות, ~11 KB)
-npm run install-claude :: העתקה ל-%USERPROFILE%\.claude\tools\ והגדרת settings.json
-```
-
-הפעל מחדש את Claude Code — הכלי `hebrew_translate` ופקודת ה-/hebrew-translate יהיו זמינים.
 
 #### עדכון
 
-הרץ שוב את bundle ו-install לאחר משיכת שינויים:
-
 ```bash
-git pull && npm run bundle && npm run install-claude
+git pull && npm run bundle
+# לא צריך להתקין מחדש — npx תמיד משיג את הגרסה האחרונה בכל סשן
 ```
 
 #### הסרה
 
-הסר את כניסת ה-`hebrew-translator` מקובץ `~/.claude/settings.json`, ואז:
-
 ```bash
-rm ~/.claude/tools/hebrew-translator-mcp.js
+claude mcp remove hebrew-translator
 ```
 
 #### אימות
 
 ```bash
-# בדיקת קיום הקובץ (~11 KB, ללא ייבוא מ-node_modules)
-ls -la dist/hebrew-translator-mcp.js
+# בדיקת תרגום
+npx -y hebrew-token-saver demo
 
 # בדיקת זיהוי עברית
 node test.js
-
-# בדיקת תרגום
-node hebrew-translator.js "שלום עולם"
-# פלט צפוי: "Hello world . Important! Reply in Hebrew"
 ```
 
 #### פתרון בעיות
 
-**"Bundled server not found at: dist/hebrew-translator-mcp.js"**
-הרץ קודם `npm run bundle`. אם esbuild חסר, ודא שהרצת `npm install`.
-
 **שרת MCP לא נטען ב-Claude Code**
-1. ודא שהקובץ קיים: `ls ~/.claude/tools/hebrew-translator-mcp.js`
-2. בדוק ש-settings.json מכיל את הכניסה: `cat ~/.claude/settings.json | grep hebrew`
+1. ודא שרשום: `claude mcp list | grep hebrew`
+2. בדוק את החבילה ישירות: `npx -y hebrew-token-saver demo`
 3. הפעל מחדש את Claude Code לחלוטין (צא והפעל שוב)
 
 **גבול API לתרגום חורג**
@@ -786,7 +710,7 @@ node hebrew-translator.js "שלום עולם"
 
 ```bash
 npm install @xenova/transformers
-node hebrew-translator-hybrid.js --local-only "שלום עולם"
+npx -y hebrew-token-saver demo-hybrid
 ```
 
 ---

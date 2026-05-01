@@ -19,7 +19,13 @@
       "Read(//Users/gilad/.opencode/**)",
       "Bash(cp *)",
       "Bash(npm audit *)",
-      "WebSearch"
+      "WebSearch",
+      "mcp__plugin_context-mode_context-mode__ctx_fetch_and_index",
+      "mcp__plugin_context-mode_context-mode__ctx_batch_execute",
+      "Bash(kill %1)",
+      "Bash(npx -y hebrew-token-saver)",
+      "mcp__plugin_context-mode_context-mode__ctx_execute",
+      "mcp__plugin_context-mode_context-mode__ctx_search"
     ]
   }
 }
