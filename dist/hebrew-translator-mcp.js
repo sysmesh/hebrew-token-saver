@@ -19,7 +19,7 @@ var require_common = __commonJS({
     var RTL_POP = "\u202C";
     var RTL_ISOLATE = "\u2067";
     var USAGE_FILE = path.join(os.homedir(), ".hebrew-translator-usage.json");
-    var DAILY_QUOTA_WORDS = 1e3;
+    var DAILY_QUOTA_WORDS = 5e3;
     function isSafePath(filePath) {
       const resolved = path.resolve(filePath);
       const homeDir = path.resolve(os.homedir());

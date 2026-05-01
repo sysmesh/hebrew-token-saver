@@ -14,16 +14,17 @@ git clone https://github.com/sysmesh/hebrew-token-saver.git
 cd hebrew-token-saver
 npm install            # install build dependencies (esbuild)
 npm run bundle         # create dist/hebrew-translator-mcp.js (zero deps, ~11 KB)
-npm run install-claude # copy to ~/.claude/tools/ and configure settings.json
+npm run install-claude # copy to ~/.claude/tools/, install skill, and configure settings.json
 ```
 
-Restart Claude Code — the `hebrew_translate` tool will be available.
+Restart Claude Code — the `hebrew_translate` tool and `/hebrew-translate` slash command will be available.
 
 ### What Happens Under the Hood
 
 1. **`npm run bundle`** — esbuild bundles `hebrew-translator-mcp-server.js` into a single CommonJS file at `dist/hebrew-translator-mcp.js`. The output uses only Node built-ins, zero npm dependencies.
 2. **`npm run install-claude`** — runs `install-claude.js`, which:
    - Copies the bundle to `~/.claude/tools/hebrew-translator-mcp.js`
+   - Copies the slash command skill to `~/.claude/skills/claude-code/hebrew-translate.md`
    - Adds an MCP server entry to `~/.claude/settings.json`:
 
 ```json

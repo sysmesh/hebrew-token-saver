@@ -11,7 +11,6 @@
     "bundle": "npx esbuild hebrew-translator-mcp.js --bundle --platform=node --target=node14 --outfile=dist/hebrew-translator-mcp.js --banner:js=\"#!/usr/bin/env node\"",
     "install-opencode": "node install-opencode.js",
     "install-claude": "node install-claude.js",
-    "install-opencode": "node install-opencode.js",
     "test": "node test.js",
     "test-rtl": "node test-rtl.js",
     "demo": "node hebrew-translator.js 'איך מכינים חלבה?'",

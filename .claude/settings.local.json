@@ -17,7 +17,9 @@
       "Bash(grep -n \"### 🟨 Claude Code\\\\|^---$\" /Users/gilad/Projects/hebrew-token-saver/README.md)",
       "Read(//Users/gilad/.claude/**)",
       "Read(//Users/gilad/.opencode/**)",
-      "Bash(cp *)"
+      "Bash(cp *)",
+      "Bash(npm audit *)",
+      "WebSearch"
     ]
   }
 }

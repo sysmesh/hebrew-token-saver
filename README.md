@@ -82,15 +82,16 @@ git clone https://github.com/sysmesh/hebrew-token-saver.git
 cd hebrew-token-saver
 npm install            # install build dependencies (esbuild)
 npm run bundle         # create dist/hebrew-translator-mcp.js (zero deps, ~11 KB)
-npm run install-claude # copy to ~/.claude/tools/ and configure settings.json
+npm run install-claude # copy to ~/.claude/tools/, install skill, and configure settings.json
 ```
 
-Restart Claude Code — the `hebrew_translate` tool will be available.
+Restart Claude Code — the `hebrew_translate` tool and `/hebrew-translate` slash command will be available.
 
 **What happens under the hood:**
 1. **`npm run bundle`** — esbuild bundles `hebrew-translator-mcp-server.js` into a single CommonJS file at `dist/hebrew-translator-mcp.js`. The output uses only Node built-ins, zero npm dependencies.
 2. **`npm run install-claude`** — runs `install-claude.js`, which:
    - Copies the bundle to `~/.claude/tools/hebrew-translator-mcp.js`
+   - Copies the slash command skill to `~/.claude/skills/claude-code/hebrew-translate.md`
    - Adds an MCP server entry to `~/.claude/settings.json`:
 
 ```json
@@ -694,12 +695,13 @@ npm run bundle         # יצירת dist/hebrew-translator-mcp.js (ללא תלו
 npm run install-claude # העתקה ל-~/.claude/tools/ והגדרת settings.json
 ```
 
-הפעל מחדש את Claude Code — הכלי `hebrew_translate` יהיה זמין.
+הפעל מחדש את Claude Code — הכלי `hebrew_translate` ופקודת ה-/hebrew-translate יהיו זמינים.
 
 **מה קורה ברקע:**
 1. **`npm run bundle`** — esbuild מאחד את `hebrew-translator-mcp-server.js` לקובץ CommonJS יחיד ב-`dist/hebrew-translator-mcp.js`. הפלט משתמש רק במודולים פנימיים של Node, ללא תלויות npm.
 2. **`npm run install-claude`** — מריץ את `install-claude.js`, אשר:
    - מעתיק את הקובץ ל-`~/.claude/tools/hebrew-translator-mcp.js`
+   - מעתיק את סקיל הפקודה ל-`~/.claude/skills/claude-code/hebrew-translate.md`
    - מוסיף כניסת שרת MCP ל-`~/.claude/settings.json`:
 
 ```json
@@ -725,7 +727,7 @@ npm run bundle         # יצירת dist/hebrew-translator-mcp.js (ללא תלו
 npm run install-claude # העתקה ל-$HOME\.claude\tools\ והגדרת settings.json
 ```
 
-הפעל מחדש את Claude Code — הכלי `hebrew_translate` יהיה זמין.
+הפעל מחדש את Claude Code — הכלי `hebrew_translate` ופקודת ה-/hebrew-translate יהיו זמינים.
 
 **באמצעות Command Prompt:**
 
@@ -737,7 +739,7 @@ npm run bundle         :: יצירת dist/hebrew-translator-mcp.js (ללא תל�
 npm run install-claude :: העתקה ל-%USERPROFILE%\.claude\tools\ והגדרת settings.json
 ```
 
-הפעל מחדש את Claude Code — הכלי `hebrew_translate` יהיה זמין.
+הפעל מחדש את Claude Code — הכלי `hebrew_translate` ופקודת ה-/hebrew-translate יהיו זמינים.
 
 #### עדכון
 

@@ -64,8 +64,33 @@ function main() {
 
   saveSettings(settings);
   console.log(`Updated settings.json → ${SETTINGS_FILE}`);
+
+  // Install skill files to ~/.claude/skills/claude-code/
+  const SKILL_SRC = path.join(PROJECT_DIR, 'skills', 'claude-code');
+  const SKILL_DST = path.join(SETTINGS_DIR, 'skills', 'claude-code');
+
+  if (fs.existsSync(SKILL_SRC)) {
+    if (!fs.existsSync(SKILL_DST)) {
+      fs.mkdirSync(SKILL_DST, { recursive: true });
+    }
+    // Copy hebrew-translate.md (the slash command skill)
+    const skillFile = path.join(SKILL_SRC, 'hebrew-translate.md');
+    if (fs.existsSync(skillFile)) {
+      fs.copyFileSync(skillFile, path.join(SKILL_DST, 'hebrew-translate.md'));
+      console.log(`Copied skill → ${path.join(SKILL_DST, 'hebrew-translate.md')}`);
+    }
+    // Copy SKILL.md (documentation)
+    const skillDoc = path.join(SKILL_SRC, 'SKILL.md');
+    if (fs.existsSync(skillDoc)) {
+      fs.copyFileSync(skillDoc, path.join(SKILL_DST, 'SKILL.md'));
+      console.log(`Copied skill doc → ${path.join(SKILL_DST, 'SKILL.md')}`);
+    }
+  }
+
   console.log('');
-  console.log('Done! Restart Claude Code, then the "hebrew_translate" tool will be available.');
+  console.log('Done! Restart Claude Code, then:');
+  console.log('  - The "hebrew_translate" MCP tool will be available');
+  console.log('  - The "/hebrew-translate" slash command will work');
   console.log('');
   console.log('Usage: When you type Hebrew, Claude will detect it and can call the tool automatically.');
   console.log('       Or ask Claude to translate: "translate this to Hebrew: שלום עולם"');
