@@ -25,7 +25,30 @@
       "Bash(kill %1)",
       "Bash(npx -y hebrew-token-saver)",
       "mcp__plugin_context-mode_context-mode__ctx_execute",
-      "mcp__plugin_context-mode_context-mode__ctx_search"
+      "mcp__plugin_context-mode_context-mode__ctx_search",
+      "Bash(python3 -m json.tool)",
+      "Bash(git *)",
+      "Bash(npm view *)",
+      "Bash(npm pack *)",
+      "Bash(npm publish *)",
+      "Bash(npm login *)",
+      "Bash(chmod +x /Users/gilad/Projects/hebrew-token-saver/dist/hebrew-translator-mcp.js /Users/gilad/Projects/hebrew-token-saver/hebrew-translator.js /Users/gilad/Projects/hebrew-token-saver/hebrew-translator-hybrid.js)",
+      "Bash(xxd dist/hebrew-translator-mcp.js)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('bin:', d.get\\('bin', 'NOT SET'\\)\\); print\\('main:', d.get\\('main', 'NOT SET'\\)\\)\")",
+      "Bash(npx -y hebrew-token-saver demo)",
+      "Bash(tar -xzf hebrew-token-saver-1.0.0.tgz -O package/package.json)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('bin:', d.get\\('bin', 'NOT SET'\\)\\)\")",
+      "Bash(tar -tzf hebrew-token-saver-1.0.0.tgz)",
+      "Bash(tar -xzf hebrew-token-saver-1.0.0.tgz -O package/dist/hebrew-translator-mcp.js)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('bin:', json.dumps\\(d.get\\('bin', 'NOT SET'\\), indent=2\\)\\); print\\('main:', d.get\\('main', 'NOT SET'\\)\\)\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('bin:', json.dumps\\(d.get\\('bin', 'NOT SET'\\), indent=2\\)\\)\")",
+      "Bash(tar -tvf hebrew-token-saver-1.0.0.tgz)",
+      "Bash(npm version *)",
+      "Bash(tar -xzf hebrew-token-saver-1.0.1.tgz -O package/package.json)",
+      "Bash(npm pkg *)",
+      "Bash(tar -tvf hebrew-token-saver-1.0.1.tgz)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('bin', 'NOT SET'\\), indent=2\\)\\)\")",
+      "Bash(npx -y hebrew-token-saver --help)"
     ]
   }
 }

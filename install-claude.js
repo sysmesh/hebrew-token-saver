@@ -66,8 +66,8 @@ function main() {
   console.log(`Updated settings.json → ${SETTINGS_FILE}`);
 
   // Install skill files to ~/.claude/skills/claude-code/
-  const SKILL_SRC = path.join(PROJECT_DIR, 'skills', 'claude-code');
-  const SKILL_DST = path.join(SETTINGS_DIR, 'skills', 'claude-code');
+  const SKILL_SRC = path.join(PROJECT_DIR, 'skills', 'hebrew-translate');
+  const SKILL_DST = path.join(SETTINGS_DIR, 'skills', 'hebrew-translate');
 
   if (fs.existsSync(SKILL_SRC)) {
     if (!fs.existsSync(SKILL_DST)) {
