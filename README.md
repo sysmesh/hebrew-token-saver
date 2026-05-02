@@ -76,7 +76,7 @@ A zero-dependency, ~11 KB bundled server that auto-translates Hebrew prompts to 
 
 #### Quick Install — `npx -y` (Recommended)
 
-Zero config, zero install — one line:
+One line, fully automatic — the server self-registers on first run:
 
 ```bash
 claude mcp add hebrew-translator -- npx -y hebrew-token-saver
@@ -86,9 +86,9 @@ That's it. Restart Claude Code — the `hebrew_translate` tool and `/hebrew-tran
 
 **How it works:**
 
-1. `claude mcp add` registers the server in `~/.claude/settings.json`
-2. `npx -y` fetches the package from npm on first use — no files left on disk, no config files generated
-3. The package's `bin` field points to the pre-bundled MCP server (`dist/hebrew-translator-mcp.js`), which is a single ~11 KB file with zero dependencies
+1. `npx -y` fetches the package from npm on first use — no files left on disk
+2. The CLI automatically copies itself to `~/.claude/tools/` and registers in `~/.claude/settings.json`
+3. Restart Claude Code — the `hebrew_translate` tool and `/hebrew-translate` slash command will be available
 
 #### Manual Install — Source
 
@@ -649,7 +649,7 @@ Fibonacci numbers recursively. Can you help me?"
 
 #### התקנה מהירה — `npx -y` (מומלץ)
 
-ללא הגדרות, ללא התקנה — שורה אחת:
+שורה אחת — השרת מתקין את עצמו אוטומטית בשימוש הראשון:
 
 ```bash
 claude mcp add hebrew-translator -- npx -y hebrew-token-saver
@@ -659,9 +659,9 @@ claude mcp add hebrew-translator -- npx -y hebrew-token-saver
 
 **איך זה עובד:**
 
-1. `claude mcp add` רושם את השרת ב-`~/.claude/settings.json`
-2. `npx -y` משיג את החבילה מ-npx בשימוש הראשון — ללא קבצים על הדיסק, ללא קבצי הגדרה
-3. השדה `bin` בחבילה מצביע על שרת MCP מאוחד (`dist/hebrew-translator-mcp.js`), קובץ יחיד ~11 KB ללא תלויות
+1. `npx -y` משיג את החבילה מ-npx בשימוש הראשון — ללא קבצים על הדיסק
+2. השרת מתקין את עצמו אוטומטית ל-`~/.claude/tools/` ונרשם ב-`settings.json`
+3. הפעל מחדש את Claude Code — הכלי `hebrew_translate` ופקודת ה-/hebrew-translate יהיו זמינים
 
 #### התקנה ידנית — מקור
 
