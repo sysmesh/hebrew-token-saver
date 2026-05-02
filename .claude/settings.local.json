@@ -61,7 +61,12 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('bin:', json.dumps\\(d.get\\('bin',{}\\), indent=2\\)\\); print\\('postinstall:', d.get\\('scripts',{}\\).get\\('postinstall','NONE'\\)\\)\")",
       "Bash(echo \"---EXIT: $?\")",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d, indent=2\\)\\)\")",
-      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('files:', json.dumps\\(d.get\\('files',[]\\), indent=2\\)\\)\")"
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('files:', json.dumps\\(d.get\\('files',[]\\), indent=2\\)\\)\")",
+      "Bash(npm whoami *)",
+      "Bash(env)",
+      "Bash(npm profile *)",
+      "Bash(npm token *)",
+      "Bash(npm *)"
     ]
   }
 }
