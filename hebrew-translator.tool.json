@@ -12,7 +12,7 @@
     "response-request": "Automatically appends Hebrew response request"
   },
   "configuration": {
-    "apiEndpoint": "https://api.mymemory.net/api/transliterate",
+    "apiEndpoint": "https://api.mymemory.translated.net/get",
     "sourceLanguage": "iw",
     "targetLanguage": "en",
     "responseRequest": ". Important! Reply in Hebrew"

@@ -19,7 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const TRANSLATE_API_URL = process.env.HEBREW_TRANSLATE_API || 'https://api.mymemory.net/api/translate';
+const TRANSLATE_API_URL = process.env.HEBREW_TRANSLATE_API || 'https://api.mymemory.translated.net/get';
 const TRANSLATE_FROM = 'iw';
 const TRANSLATE_TO = 'en';
 const MAX_TEXT_LENGTH = 800;

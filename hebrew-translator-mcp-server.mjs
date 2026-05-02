@@ -77,7 +77,7 @@ function isHebrew(text, threshold = 0.2) {
 }
 
 async function translateHebrew(text) {
-  const url = `https://api.mymemory.net/api/translate?q=${encodeURIComponent(text.trim())}&langpair=iw|en`;
+  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text.trim())}&langpair=iw|en`;
   const res = await fetch(url);
   const data = await res.json();
   if (data.responseData?.translatedText) {
