@@ -87,7 +87,6 @@ Token savings: 40%
 ## התקנה ושימוש לפי פלטפורמה
 
 ### 🟨 Claude Code (MCP Server)
-### 🟨 Claude Code (שרת MCP)
 
 A zero-dependency, ~11 KB bundled server that auto-translates Hebrew prompts to English for Claude Code.
 שרת מקומי ללא תלות, ~11 KB, המתרגם אוטומטית פרומפטים מעברית לאנגלית עבור Claude Code.
@@ -178,7 +177,6 @@ npx -y hebrew-token-saver demo-hybrid
 
 ---
 
-### 🟩 OpenCode
 ### 🟩 OpenCode
 
 #### Installation on macOS / התקנה ב-macOS
@@ -304,7 +302,6 @@ Final Prompt: Hello world . Important! Reply in Hebrew
 
 ---
 
-### 🟦 Pi.dev
 ### 🟦 Pi.dev
 
 #### Installation on macOS / התקנה ב-macOS
