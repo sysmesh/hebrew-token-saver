@@ -1,6 +1,6 @@
 {
   "name": "hebrew-token-saver",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "Cross-platform skill that auto-translates Hebrew prompts to English and requests Hebrew responses",
   "main": "hebrew-translator.js",
   "bin": {
